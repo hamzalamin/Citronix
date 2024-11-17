@@ -9,6 +9,7 @@ import com.wora.citronix.models.entities.Farm;
 import com.wora.citronix.repositories.FarmRepository;
 import com.wora.citronix.services.inter.IFarmService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +49,10 @@ public class FarmService implements IFarmService {
 
     @Override
     public List<FarmDto> findAll(Integer pageNumber, Integer size) {
-        return List.of();
+        PageRequest pageable = PageRequest.of(pageNumber, size);
+        return farmRepository.findAll(pageable).stream()
+                .map(farmMapper::toDto)
+                .toList();
     }
 
     @Override
