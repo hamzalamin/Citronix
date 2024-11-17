@@ -1,6 +1,7 @@
-package com.wora.citronix.repositories;
+package com.wora.citronix.helps;
 
 import com.wora.citronix.models.entities.Farm;
+import com.wora.citronix.repositories.CriteriaAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFarmImpl implements CriteriaAPI{
+public class SearchFarmImpl implements CriteriaAPI {
     @PersistenceContext
     private EntityManager entityManager;
 

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -60,5 +61,12 @@ public class FarmService implements IFarmService {
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Farm", id));
         farmRepository.delete(farm);
+    }
+
+    @Override
+    public List<FarmDto> search(String name, String localization, Double surface, LocalDate creationDate) {
+        return farmRepository.searchFarms(name, localization, surface,creationDate).stream()
+                .map(farmMapper::toDto)
+                .toList();
     }
 }
