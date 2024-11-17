@@ -1,25 +1,27 @@
-package com.wora.citronix.helps;
+package com.wora.citronix.repositories;
 
 import com.wora.citronix.models.entities.Farm;
-import com.wora.citronix.repositories.CriteriaAPI;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFarmImpl implements CriteriaAPI {
+@Repository
+public class FarmRepositoryCustomImpl implements FarmRepositoryCustom {
+
     @PersistenceContext
     private EntityManager entityManager;
 
 
     @Override
-    public List<Farm> searchFarms(String name, String localization, Double surface, LocalDate creationDate) {
+    public List<Farm> search(String name, String localization, Double surface, LocalDate creationDate) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Farm> cq = cb.createQuery(Farm.class);
         Root<Farm> farmRoot = cq.from(Farm.class);

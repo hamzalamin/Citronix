@@ -65,7 +65,7 @@ public class FarmService implements IFarmService {
 
     @Override
     public List<FarmDto> search(String name, String localization, Double surface, LocalDate creationDate) {
-        return farmRepository.searchFarms(name, localization, surface,creationDate).stream()
+        return farmRepository.search(name, localization, surface,creationDate).stream()
                 .map(farmMapper::toDto)
                 .toList();
     }

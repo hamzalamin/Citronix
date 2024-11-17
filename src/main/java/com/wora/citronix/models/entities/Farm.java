@@ -38,6 +38,6 @@ public class Farm {
     @NotNull
     private LocalDate creationDate;
 
-    @OneToMany(mappedBy = "farms", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL)
     private List<Field> fields;
 }
