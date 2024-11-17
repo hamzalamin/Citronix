@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity(name = "farms")
 @Getter
@@ -21,7 +22,8 @@ public class Farm {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
+    @NotBlank
     private String name;
 
     @Column(name = "localization")
@@ -35,4 +37,7 @@ public class Farm {
     @Column(name = "creation_date")
     @NotNull
     private LocalDate creationDate;
+
+    @OneToMany(mappedBy = "farms", cascade = CascadeType.ALL)
+    private List<Field> fields;
 }
