@@ -2,6 +2,7 @@ package com.wora.citronix.controllers;
 
 import com.wora.citronix.models.DTOs.farmDtos.CreateFarmDto;
 import com.wora.citronix.models.DTOs.farmDtos.FarmDto;
+import com.wora.citronix.models.DTOs.farmDtos.UpdateFarmDto;
 import com.wora.citronix.services.inter.IFarmService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,14 @@ public class FarmController {
     @GetMapping("/farm/{id}")
     public ResponseEntity<FarmDto> findAById(@PathVariable Long id){
         return new ResponseEntity<>(farmService.findById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/farm/{id}")
+    public ResponseEntity<FarmDto> update(
+            @RequestBody @Valid UpdateFarmDto updateFarmDto,
+            @PathVariable Long id
+    ){
+        return new ResponseEntity<>(farmService.update(updateFarmDto, id), HttpStatus.OK);
     }
 
 }
