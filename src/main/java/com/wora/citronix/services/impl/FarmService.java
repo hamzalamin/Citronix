@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.mappers.FarmMapper;
 import com.wora.citronix.models.DTOs.farmDtos.CreateFarmDto;
 import com.wora.citronix.models.DTOs.farmDtos.FarmDto;
@@ -28,7 +29,9 @@ public class FarmService implements IFarmService {
 
     @Override
     public FarmDto findById(Long id) {
-        return null;
+        Farm farm = farmRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Farm", id));
+        return farmMapper.toDto(farm);
     }
 
     @Override
