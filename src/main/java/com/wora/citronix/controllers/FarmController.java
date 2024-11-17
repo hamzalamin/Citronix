@@ -31,4 +31,9 @@ public class FarmController {
         return new ResponseEntity<>(farms, HttpStatus.OK);
     }
 
+    @GetMapping("/farm/{id}")
+    public ResponseEntity<FarmDto> findAById(@PathVariable Long id){
+        return new ResponseEntity<>(farmService.findById(id), HttpStatus.OK);
+    }
+
 }
