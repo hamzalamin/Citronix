@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CitronixApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CitronixApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CitronixApplication.class, args);
+    }
 
 }
