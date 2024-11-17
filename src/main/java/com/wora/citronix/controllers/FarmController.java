@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -21,6 +20,15 @@ public class FarmController {
     @PostMapping("/farms")
     public ResponseEntity<FarmDto> create(@RequestBody @Valid CreateFarmDto farmDto){
         return new ResponseEntity<>(farmService.save(farmDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/farms")
+    public ResponseEntity<List<FarmDto>> findAll(
+            @RequestParam Integer pageNumber,
+            @RequestParam Integer size
+    ){
+        List<FarmDto> farms = farmService.findAll(pageNumber, size);
+        return new ResponseEntity<>(farms, HttpStatus.OK);
     }
 
 }
