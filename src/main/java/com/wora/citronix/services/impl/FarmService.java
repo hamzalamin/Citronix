@@ -36,7 +36,14 @@ public class FarmService implements IFarmService {
 
     @Override
     public FarmDto update(UpdateFarmDto updateFarmDto, Long id) {
-        return null;
+        Farm farm = farmRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Farm", id));
+        farm.setName(updateFarmDto.name());
+        farm.setLocalization(updateFarmDto.localization());
+        farm.setCreationDate(updateFarmDto.creationDate());
+        farm.setSurface(farm.getSurface());
+        Farm updatedFarm = farmRepository.save(farm);
+        return farmMapper.toDto(updatedFarm);
     }
 
     @Override
