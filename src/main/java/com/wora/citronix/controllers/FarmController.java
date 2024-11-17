@@ -45,4 +45,10 @@ public class FarmController {
         return new ResponseEntity<>(farmService.update(updateFarmDto, id), HttpStatus.OK);
     }
 
+    @DeleteMapping("/farm/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        farmService.delete(id);
+        return new ResponseEntity<>("FARM WITH ID: " + id + " DELETED SUCCESSFULLY !!", HttpStatus.OK);
+    }
+
 }
