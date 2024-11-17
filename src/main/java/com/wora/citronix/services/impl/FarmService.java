@@ -57,6 +57,8 @@ public class FarmService implements IFarmService {
 
     @Override
     public void delete(Long id) {
-
+        Farm farm = farmRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Farm", id));
+        farmRepository.delete(farm);
     }
 }
