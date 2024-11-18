@@ -80,6 +80,7 @@ public class FieldService implements IFieldService {
             throw new InsufficientFarmSurfaceException("Farm surface area is insufficient for the new field");
         }
 
+        field.setFarm(farm);
         field.setName(updateFieldDto.name());
         field.setSurface(updateFieldDto.surface());
         Field savedField = fieldRepository.save(field);

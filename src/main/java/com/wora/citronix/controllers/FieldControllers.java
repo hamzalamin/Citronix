@@ -2,6 +2,7 @@ package com.wora.citronix.controllers;
 
 import com.wora.citronix.models.DTOs.fieldDtos.CreateFieldDto;
 import com.wora.citronix.models.DTOs.fieldDtos.FieldDto;
+import com.wora.citronix.models.DTOs.fieldDtos.UpdateFieldDto;
 import com.wora.citronix.services.inter.IFieldService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,10 @@ public class FieldControllers {
     @GetMapping("/field/{id}")
     public ResponseEntity<FieldDto> findById(@PathVariable Long id){
         return new ResponseEntity<>(fieldService.findById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/field/{id}")
+    public ResponseEntity<FieldDto> update(@RequestBody UpdateFieldDto updateFieldDto, @PathVariable Long id){
+        return new ResponseEntity<>(fieldService.update(updateFieldDto, id), HttpStatus.CREATED);
     }
 }
