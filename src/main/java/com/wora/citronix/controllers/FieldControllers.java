@@ -31,4 +31,9 @@ public class FieldControllers {
         List<FieldDto> fields = fieldService.findAll(pageNumber, size);
         return new ResponseEntity<>(fields, HttpStatus.CREATED);
     }
+
+    @GetMapping("/field/{id}")
+    public ResponseEntity<FieldDto> findById(@PathVariable Long id){
+        return new ResponseEntity<>(fieldService.findById(id), HttpStatus.OK);
+    }
 }
