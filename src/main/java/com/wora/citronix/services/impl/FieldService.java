@@ -47,6 +47,10 @@ public class FieldService implements IFieldService {
         if (farmSurface <= totalFieldsSurface + fieldSurface) {
             throw new InsufficientFarmSurfaceException("Farm surface area is insufficient for the new field");
         }
+        if (fieldSurface < 0.01){
+            throw new InsufficientFarmSurfaceException("Surface of Field must be more then 0.01 Hectar");
+        }
+
         field.setFarm(farm);
         Field savedField = fieldRepository.save(field);
         return fieldMapper.toDto(savedField);
@@ -78,6 +82,9 @@ public class FieldService implements IFieldService {
         }
         if (farmSurface <= totalFieldsSurface + fieldSurface) {
             throw new InsufficientFarmSurfaceException("Farm surface area is insufficient for the new field");
+        }
+        if (fieldSurface < 0.01){
+            throw new InsufficientFarmSurfaceException("Surface of Field must be more then 0.01 Hectar");
         }
 
         field.setFarm(farm);
