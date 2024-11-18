@@ -93,7 +93,9 @@ public class FieldService implements IFieldService {
 
     @Override
     public void delete(Long id) {
-
+        Field field = fieldRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Field", id));
+        fieldRepository.delete(field);
     }
 
     @Override
