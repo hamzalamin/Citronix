@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.exceptions.InsufficientFarmSurfaceException;
 import com.wora.citronix.mappers.FieldMapper;
 import com.wora.citronix.models.DTOs.fieldDtos.CreateFieldDto;
@@ -49,7 +50,8 @@ public class FieldService implements IFieldService {
 
     @Override
     public FieldDto findById(Long id) {
-        return null;
+        Field field = fieldRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Field", id));
+        return fieldMapper.toDto(field);
     }
 
     @Override
