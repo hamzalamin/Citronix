@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "Harvest_Details")
+@Entity(name = "harvest_details")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class HarvestDetails {
+public class HarvestDetail {
     @EmbeddedId
     private HarvestDetailsId id;
 

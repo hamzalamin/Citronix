@@ -20,5 +20,5 @@ public class Harvest {
     private Long id;
 
     @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
-    private List<HarvestDetails> harvestDetails;
+    private List<HarvestDetail> harvestDetails;
 }
