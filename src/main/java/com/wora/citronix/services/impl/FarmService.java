@@ -71,10 +71,9 @@ public class FarmService implements IFarmService {
     }
 
     @Override
-    public Double calculateFarmSurface(){
-        return farmRepository.findAll().stream()
-                .mapToDouble(Farm::getSurface)
-                .sum();
+    public Farm getFarmEntityById(Long id) {
+        return farmRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Farm", id));
     }
 
 
