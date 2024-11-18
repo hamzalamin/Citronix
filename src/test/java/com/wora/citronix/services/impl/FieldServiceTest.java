@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FieldServiceTest {
@@ -32,5 +33,19 @@ class FieldServiceTest {
         CreateFieldDto createFieldDto = null;
         assertThrows(NullPointerException.class, () -> sut.save(createFieldDto));
     }
+
+    @Test
+    @DisplayName("save() Should Throw Exception When Farm Not Found")
+    void save_ShouldThrowExceptionWhenFarmNotFound() {
+        CreateFieldDto createFieldDto = new CreateFieldDto("Field 1", 20.0, 1L);
+
+        when(farmService.getFarmEntityById(1L)).thenThrow(new IllegalArgumentException("Farm not found"));
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> sut.save(createFieldDto));
+
+        assertEquals("Farm not found", exception.getMessage());
+    }
+
+
 
 }
