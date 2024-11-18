@@ -13,10 +13,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "farms")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Farm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

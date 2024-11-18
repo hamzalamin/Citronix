@@ -12,10 +12,10 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity(name = "fileds")
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
