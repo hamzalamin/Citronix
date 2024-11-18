@@ -27,17 +27,22 @@ public class FieldService implements IFieldService {
     public FieldDto save(CreateFieldDto createFieldDto) {
         Field field = fieldMapper.toEntity(createFieldDto);
         Farm farm = farmService.getFarmEntityById(createFieldDto.farmId());
+
         Double totalFieldsSurface = calculateFieldsSurface(farm);
         Double halfFarmSurface = farm.getSurface() / 2;
         Double farmSurface = farm.getSurface();
         Double fieldSurface = field.getSurface();
 
+        if (calculateFieldsNumber(farm) >= 10) {
+            throw new InsufficientFarmSurfaceException("The maximum number of fields allowed on a farm is 10");
+        }
         if (fieldSurface > halfFarmSurface) {
             throw new InsufficientFarmSurfaceException("Field must be under 50% of the farm surface");
         }
         if (farmSurface <= totalFieldsSurface + fieldSurface) {
             throw new InsufficientFarmSurfaceException("Farm surface area is insufficient for the new field");
         }
+
         Field savedField = fieldRepository.save(field);
         return fieldMapper.toDto(savedField);
     }
@@ -67,5 +72,9 @@ public class FieldService implements IFieldService {
         return fieldRepository.findByFarm(farm).stream()
                 .mapToDouble(Field::getSurface)
                 .sum();
+    }
+
+    private Integer calculateFieldsNumber(Farm farm) {
+        return fieldRepository.findByFarm(farm).size();
     }
 }
