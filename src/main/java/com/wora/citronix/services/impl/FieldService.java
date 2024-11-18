@@ -109,7 +109,7 @@ public class FieldService implements IFieldService {
                 .sum();
     }
 
-    private Integer calculateFieldsNumber(Farm farm) {
+    public Integer calculateFieldsNumber(Farm farm) {
         return fieldRepository.findByFarm(farm).size();
     }
 
