@@ -112,4 +112,26 @@ class FarmServiceTest {
     }
 
 
+    @Test
+    @DisplayName("search() Should Return Matching Farms When Some Filters Are Null")
+    void search_ShouldReturnMatchingFarmsWhenSomeFiltersAreNull() {
+        String name = null;
+        String localization = "Location Y";
+        Double surface = null;
+        LocalDate creationDate = null;
+
+        List<Farm> farms = List.of(new Farm(2L, "Farm B", "Location Y", 200.0, null, List.of()));
+        List<FarmDto> expectedDtos = List.of(new FarmDto(2L, "Farm B", "Location Y", 200.0, null, List.of()));
+
+        when(farmRepository.search(name, localization, surface, creationDate)).thenReturn(farms);
+        when(farmMapper.toDto(any(Farm.class))).thenReturn(expectedDtos.getFirst());
+
+        List<FarmDto> result = sut.search(name, localization, surface, creationDate);
+
+        assertNotNull(result);
+        assertEquals(expectedDtos, result);
+        verify(farmRepository).search(name, localization, surface, creationDate);
+        verify(farmMapper, times(farms.size())).toDto(any(Farm.class));
+    }
+
 }
