@@ -11,7 +11,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity(name = "fileds")
+@Entity(name = "fields")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
