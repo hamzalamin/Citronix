@@ -1,14 +1,12 @@
-package com.wora.citronix.models.DTOs.fieldsDtos;
+package com.wora.citronix.models.DTOs.fieldDtos;
 
-import com.wora.citronix.models.DTOs.farmDtos.EmbeddedFarmDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-public record FieldDto(
-        @NotNull @Positive Long id,
+public record CreateFieldDto(
         @NotBlank String name,
         @NotNull @Positive Double surface,
-        EmbeddedFarmDto farm
+        @NotNull @Positive Long farmId
 ) {
 }
