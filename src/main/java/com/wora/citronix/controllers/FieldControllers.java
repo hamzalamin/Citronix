@@ -42,4 +42,10 @@ public class FieldControllers {
     public ResponseEntity<FieldDto> update(@RequestBody UpdateFieldDto updateFieldDto, @PathVariable Long id){
         return new ResponseEntity<>(fieldService.update(updateFieldDto, id), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/field/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        fieldService.delete(id);
+        return new ResponseEntity<>("FIELD WITH ID: " + id + " DELETED SUCCESSFULLY !!", HttpStatus.OK);
+    }
 }
