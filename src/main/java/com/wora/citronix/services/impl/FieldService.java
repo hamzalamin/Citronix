@@ -1,17 +1,26 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.mappers.FieldMapper;
 import com.wora.citronix.models.DTOs.fieldDtos.CreateFieldDto;
 import com.wora.citronix.models.DTOs.fieldDtos.FieldDto;
 import com.wora.citronix.models.DTOs.fieldDtos.UpdateFieldDto;
+import com.wora.citronix.repositories.FieldRepository;
 import com.wora.citronix.services.inter.IFieldService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class FieldService implements IFieldService {
+
+    private final FieldRepository fieldRepository;
+    private final FieldMapper fieldMapper;
+
     @Override
     public FieldDto save(CreateFieldDto createFieldDto) {
+
         return null;
     }
 

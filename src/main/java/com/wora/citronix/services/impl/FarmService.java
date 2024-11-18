@@ -69,4 +69,13 @@ public class FarmService implements IFarmService {
                 .map(farmMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public Double calculateFarmSurface(){
+        return farmRepository.findAll().stream()
+                .mapToDouble(Farm::getSurface)
+                .sum();
+    }
+
+
 }

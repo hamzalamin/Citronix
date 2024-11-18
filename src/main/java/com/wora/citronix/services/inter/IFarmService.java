@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface IFarmService extends GenericService<CreateFarmDto, UpdateFarmDto, FarmDto, Long> {
     List<FarmDto> search(String name, String localization, Double surface, LocalDate creationDate);
+    Double calculateFarmSurface();
 }
