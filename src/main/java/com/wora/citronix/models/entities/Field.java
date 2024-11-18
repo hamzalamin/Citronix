@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity(name = "fileds")
 @Getter
 @Setter
@@ -31,4 +33,7 @@ public class Field {
     @ManyToOne
     @JoinColumn(name = "farm_id")
     private Farm farm;
+
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
+    private List<Tree> trees;
 }
