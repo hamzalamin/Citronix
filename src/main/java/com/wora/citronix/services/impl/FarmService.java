@@ -1,6 +1,7 @@
 package com.wora.citronix.services.impl;
 
 import com.wora.citronix.exceptions.EntityNotFoundException;
+import com.wora.citronix.exceptions.InsufficientFarmSurfaceException;
 import com.wora.citronix.mappers.FarmMapper;
 import com.wora.citronix.models.DTOs.farmDtos.CreateFarmDto;
 import com.wora.citronix.models.DTOs.farmDtos.FarmDto;
@@ -25,6 +26,9 @@ public class FarmService implements IFarmService {
     @Override
     public FarmDto save(CreateFarmDto createFarmDto) {
         Farm farm = farmMapper.toEntity(createFarmDto);
+        if (farm.getSurface() < 0.2){
+            throw new InsufficientFarmSurfaceException("The min surface value of farm must be 0.02 Hectar");
+        }
         Farm savedFarm = farmRepository.save(farm);
         return farmMapper.toDto(savedFarm);
     }

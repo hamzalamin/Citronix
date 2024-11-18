@@ -1,6 +1,7 @@
 package com.wora.citronix.helps;
 
 import com.wora.citronix.exceptions.EntityNotFoundException;
+import com.wora.citronix.exceptions.InsufficientFarmSurfaceException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+
+    @ExceptionHandler(InsufficientFarmSurfaceException.class)
+    public ResponseEntity<String> handleInsufficientFarmSurfaceException(InsufficientFarmSurfaceException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
