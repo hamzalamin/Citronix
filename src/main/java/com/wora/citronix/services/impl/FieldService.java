@@ -12,6 +12,7 @@ import com.wora.citronix.repositories.FieldRepository;
 import com.wora.citronix.services.inter.IFarmService;
 import com.wora.citronix.services.inter.IFieldService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -84,7 +85,10 @@ public class FieldService implements IFieldService {
 
     @Override
     public List<FieldDto> findAll(Integer pageNumber, Integer size) {
-        return List.of();
+        PageRequest pageable = PageRequest.of(pageNumber, size);
+        return fieldRepository.findAll(pageable).stream()
+                .map(fieldMapper::toDto)
+                .toList();
     }
 
     @Override
