@@ -27,7 +27,7 @@ public class FarmService implements IFarmService {
     public FarmDto save(CreateFarmDto createFarmDto) {
         Farm farm = farmMapper.toEntity(createFarmDto);
         if (farm.getSurface() < 0.2){
-            throw new InsufficientFarmSurfaceException("The min surface value of farm must be 0.02 Hectar");
+            throw new InsufficientFarmSurfaceException("The min surface value of farm must be 0.2 Hectar");
         }
         Farm savedFarm = farmRepository.save(farm);
         return farmMapper.toDto(savedFarm);
@@ -44,6 +44,9 @@ public class FarmService implements IFarmService {
     public FarmDto update(UpdateFarmDto updateFarmDto, Long id) {
         Farm farm = farmRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Farm", id));
+        if (farm.getSurface() < 0.2){
+            throw new InsufficientFarmSurfaceException("The min surface value of farm must be 0.2 Hectar");
+        }
         farm.setName(updateFarmDto.name());
         farm.setLocalization(updateFarmDto.localization());
         farm.setCreationDate(updateFarmDto.creationDate());
