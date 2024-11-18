@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,5 +92,24 @@ class FarmServiceTest {
         verify(farmMapper, times(farms.size())).toDto(any(Farm.class));
 
     }
+
+    @Test
+    @DisplayName("search() Should Return Empty List When No Farms Match")
+    void search_ShouldReturnEmptyListWhenNoFarmsMatch() {
+        String name = "Nonexistent Farm";
+        String localization = "Nonexistent Location";
+        Double surface = 500.0;
+        LocalDate creationDate = LocalDate.of(2020, 1, 1);
+
+        when(farmRepository.search(name, localization, surface, creationDate)).thenReturn(Collections.emptyList());
+
+        List<FarmDto> result = sut.search(name, localization, surface, creationDate);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(farmRepository).search(name, localization, surface, creationDate);
+        verifyNoInteractions(farmMapper);
+    }
+
 
 }
