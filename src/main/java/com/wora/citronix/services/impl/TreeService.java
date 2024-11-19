@@ -88,7 +88,9 @@ public class TreeService implements ITreeService {
 
     @Override
     public void delete(Long id) {
-
+        Tree tree = treeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tree", id));
+        treeRepository.delete(tree);
     }
 
     public boolean isBetweenFiveAndSevenMonths(Tree tree) {
