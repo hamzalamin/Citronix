@@ -1,8 +1,12 @@
 package com.wora.citronix.services.impl;
 
 import com.wora.citronix.exceptions.EntityNotFoundException;
+import com.wora.citronix.exceptions.PlantingDateException;
 import com.wora.citronix.mappers.TreeMapper;
 import com.wora.citronix.models.DTOs.treeDtos.CreateTreeDto;
+import com.wora.citronix.models.entities.Farm;
+import com.wora.citronix.models.entities.Field;
+import com.wora.citronix.models.entities.Tree;
 import com.wora.citronix.repositories.TreeRepository;
 import com.wora.citronix.services.inter.IFieldService;
 import com.wora.citronix.services.inter.ITreeService;
@@ -17,10 +21,12 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
@@ -39,13 +45,13 @@ class TreeServiceTest {
     @DisplayName("save() Should Throw Exception When TreeDto Is Null")
     void save_ShouldThrowExceptionWhenTreeDtoIsNull() {
         CreateTreeDto createTreeDto = null;
-        assertThrows(NullPointerException.class , () -> sut.save(createTreeDto));
+        assertThrows(NullPointerException.class, () -> sut.save(createTreeDto));
 
     }
 
     @Test
     @DisplayName("save() Should throw Exception When Field Not found")
-    void save_ShouldThrowExceptionWhenFieldNotFound(){
+    void save_ShouldThrowExceptionWhenFieldNotFound() {
         LocalDate plantingDate = LocalDate.parse("2020-06-06");
         Long fieldId = 9999L;
 
@@ -53,6 +59,29 @@ class TreeServiceTest {
         given(fieldService.getFieldEntityById(fieldId)).willThrow(new EntityNotFoundException("field", fieldId));
         assertThatExceptionOfType(EntityNotFoundException.class)
                 .isThrownBy(() -> sut.save(createTreeDto))
-                .withMessage("field with the id " + fieldId +" not found");
+                .withMessage("field with the id " + fieldId + " not found");
     }
+
+    @Test
+    @DisplayName("save() Should throw Exception When Date Is Not Between Five And Seven Months")
+    void save_ShouldThrowExceptionWhenDateIsNotBetweenFiveAndSevenMonths() {
+        LocalDate plantingDate = LocalDate.parse("2020-02-02");
+        LocalDate creationDate = LocalDate.parse("2020-01-01");
+        Farm farm = new Farm(1L, "NAME Y", "LOCAL X", 200.0, creationDate, List.of());
+        Field field = new Field(1L, "name x", 12.2, farm, List.of());
+
+        given(fieldService.getFieldEntityById(field.getId())).willReturn(field);
+
+        Tree tree = new Tree(1L, plantingDate, field, List.of());
+
+        given(treeMapper.toEntity(any(CreateTreeDto.class))).willReturn(tree);
+
+        CreateTreeDto createTreeDto = new CreateTreeDto(plantingDate, field.getId());
+
+        assertThatExceptionOfType(PlantingDateException.class)
+                .isThrownBy(() -> sut.save(createTreeDto))
+                .withMessage("The planting date must fall within a range of 5 to 7 months from the current date.");
+    }
+
+
 }
