@@ -2,6 +2,7 @@ package com.wora.citronix.controllers;
 
 import com.wora.citronix.models.DTOs.treeDtos.CreateTreeDto;
 import com.wora.citronix.models.DTOs.treeDtos.TreeDto;
+import com.wora.citronix.models.DTOs.treeDtos.UpdateTreeDto;
 import com.wora.citronix.services.inter.ITreeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,4 +33,13 @@ public class TreeController {
         List<TreeDto> trees = treeService.findAll(pageNumber, size);
         return new ResponseEntity<>(trees, HttpStatus.OK);
     }
+
+    @PutMapping("/tree/{id}")
+    public ResponseEntity<TreeDto> update(
+            @RequestBody UpdateTreeDto updateTreeDto,
+            @PathVariable Long id
+    ){
+        return new ResponseEntity<>(treeService.update(updateTreeDto ,id), HttpStatus.OK);
+    }
+
 }
