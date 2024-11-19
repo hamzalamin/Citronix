@@ -42,4 +42,14 @@ public class TreeController {
         return new ResponseEntity<>(treeService.update(updateTreeDto ,id), HttpStatus.OK);
     }
 
+    @DeleteMapping("/tree/{id}")
+    public ResponseEntity<String> update(
+            @PathVariable Long id
+    ){
+        treeService.delete(id);
+        return new ResponseEntity<>("TREE WITH ID: " + id + " DELETED SUCCESSFULLY !!", HttpStatus.OK);
+    }
+
+
+
 }
