@@ -1,6 +1,7 @@
 package com.wora.citronix.services.impl;
 
 import com.wora.citronix.exceptions.EntityNotFoundException;
+import com.wora.citronix.exceptions.InsufficientFieldSurfaceException;
 import com.wora.citronix.exceptions.PlantingDateException;
 import com.wora.citronix.mappers.TreeMapper;
 import com.wora.citronix.models.DTOs.treeDtos.CreateTreeDto;
@@ -81,6 +82,26 @@ class TreeServiceTest {
         assertThatExceptionOfType(PlantingDateException.class)
                 .isThrownBy(() -> sut.save(createTreeDto))
                 .withMessage("The planting date must fall within a range of 5 to 7 months from the current date.");
+    }
+
+    @Test
+    @DisplayName("save() Should Throw Exception When Maximum Number of Trees Exceeded")
+    void save_ShouldThrowExceptionWhenMaxNumberOfTreesExceeded() {
+        LocalDate plantingDate = LocalDate.parse("2024-06-06");
+        LocalDate creationDate = LocalDate.parse("2023-12-01");
+        Farm farm = new Farm(1L, "Farm Y", "Local X", 200.0, creationDate, List.of());
+        Field field = new Field(1L, "Field X", 1.0, farm, List.of());
+        Tree tree = new Tree(null, plantingDate, field, List.of());
+
+        CreateTreeDto createTreeDto = new CreateTreeDto(plantingDate, field.getId());
+
+        given(fieldService.getFieldEntityById(field.getId())).willReturn(field);
+        given(treeMapper.toEntity(any(CreateTreeDto.class))).willReturn(tree);
+        given(treeRepository.countByFieldId(field.getId())).willReturn(100);
+
+        assertThatExceptionOfType(InsufficientFieldSurfaceException.class)
+                .isThrownBy(() -> sut.save(createTreeDto))
+                .withMessage("Maximum number of trees (100) exceeded for this field.");
     }
 
 

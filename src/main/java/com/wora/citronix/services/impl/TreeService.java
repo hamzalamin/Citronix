@@ -34,6 +34,9 @@ public class TreeService implements ITreeService {
 
         Field field = fieldService.getFieldEntityById(createTreeDto.fieldId());
 
+        if (tree.getPlantingDate().isBefore(field.getFarm().getCreationDate())){
+            throw new PlantingDateException("The planting date must bee must bee after the creation date of farm.");
+        }
         if (!isBetweenFiveAndSevenMonths(tree)) {
             throw new PlantingDateException("The planting date must fall within a range of 5 to 7 months from the current date.");
         }
