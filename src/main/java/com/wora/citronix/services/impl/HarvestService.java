@@ -50,7 +50,20 @@ public class HarvestService implements IHarvestService {
 
     @Override
     public HarvestDto update(UpdateHarvestDto updateHarvestDto, Long id) {
-        return null;
+        Harvest harvest = harvestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Harvest", id));
+        if (!isSameSeason(updateHarvestDto.creationDate(), updateHarvestDto.season())){
+            throw new NotSameSeasonException("The creation date is not in the same season.");
+        }
+        if (isRepeatedSeason(updateHarvestDto.creationDate(), updateHarvestDto.season(), updateHarvestDto.farmId())){
+            throw new HarvestAlreadyExistsException("A harvest already exists for this season and year.");
+        }
+        Farm farm = farmService.getFarmEntityById(updateHarvestDto.farmId());
+        harvest.setFarm(farm);
+        harvest.setCreationDate(updateHarvestDto.creationDate());
+        harvest.setSeason(updateHarvestDto.season());
+        Harvest savedHarvest = harvestRepository.save(harvest);
+        return harvestMapper.toDto(savedHarvest);
     }
 
     @Override
