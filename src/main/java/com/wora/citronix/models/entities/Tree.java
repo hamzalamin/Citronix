@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Entity(name = "trees")
@@ -30,4 +31,26 @@ public class Tree {
 
     @OneToMany(mappedBy = "tree", cascade = CascadeType.ALL)
     private List<HarvestDetail> harvestDetails;
+
+    public int getAge(){
+        return Period.between(plantingDate, LocalDate.now()).getYears();
+    }
+
+    public double getProductivityByKg(){
+        int age = getAge();
+        if (age <= 3){
+            return 2.5;
+        }
+        if (age > 3 && age <= 10){
+            return 12;
+        }
+        if (age > 10 && age <=20){
+            return 20;
+        }
+        if (age > 20){
+            return 0;
+        }
+        return 0;
+    }
+
 }
