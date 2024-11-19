@@ -14,6 +14,7 @@ import com.wora.citronix.repositories.TreeRepository;
 import com.wora.citronix.services.inter.IFieldService;
 import com.wora.citronix.services.inter.ITreeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -79,7 +80,10 @@ public class TreeService implements ITreeService {
 
     @Override
     public List<TreeDto> findAll(Integer pageNumber, Integer size) {
-        return List.of();
+        PageRequest pageable = PageRequest.of(pageNumber, size);
+        return treeRepository.findAll(pageable).stream()
+                .map(treeMapper::toDto)
+                .toList();
     }
 
     @Override
