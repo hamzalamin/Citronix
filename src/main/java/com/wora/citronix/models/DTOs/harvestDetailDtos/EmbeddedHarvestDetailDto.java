@@ -1,4 +1,8 @@
 package com.wora.citronix.models.DTOs.harvestDetailDtos;
 
-public record EmbeddedHarvestDetailDto() {
+import com.wora.citronix.models.entities.embeddables.HarvestDetailsId;
+
+public record EmbeddedHarvestDetailDto(
+        HarvestDetailsId id
+) {
 }
