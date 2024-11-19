@@ -40,4 +40,7 @@ public class Farm {
 
     @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL)
     private List<Field> fields;
+
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL)
+    private List<Harvest> harvests;
 }

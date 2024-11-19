@@ -30,6 +30,10 @@ public class Harvest {
     @NotNull
     private Season season;
 
+    @ManyToOne
+    @JoinColumn(name = "farm_id")
+    private Farm farm;
+
     @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
     private List<HarvestDetail> harvestDetails;
 }
