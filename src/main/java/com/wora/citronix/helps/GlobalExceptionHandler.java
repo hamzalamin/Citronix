@@ -1,9 +1,6 @@
 package com.wora.citronix.helps;
 
-import com.wora.citronix.exceptions.EntityNotFoundException;
-import com.wora.citronix.exceptions.InsufficientFarmSurfaceException;
-import com.wora.citronix.exceptions.InsufficientFieldSurfaceException;
-import com.wora.citronix.exceptions.PlantingDateException;
+import com.wora.citronix.exceptions.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +32,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PlantingDateException.class)
     public ResponseEntity<String> handlePlantingDateException(PlantingDateException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NotSameSeasonException.class)
+    public ResponseEntity<String> handleNotSameSeasonException(NotSameSeasonException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(HarvestAlreadyExistsException.class)
+    public ResponseEntity<String> handleHarvestAlreadyExistsException(HarvestAlreadyExistsException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
