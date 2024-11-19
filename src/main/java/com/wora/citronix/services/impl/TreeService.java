@@ -1,7 +1,6 @@
 package com.wora.citronix.services.impl;
 
 import com.wora.citronix.exceptions.EntityNotFoundException;
-import com.wora.citronix.exceptions.InsufficientFarmSurfaceException;
 import com.wora.citronix.exceptions.InsufficientFieldSurfaceException;
 import com.wora.citronix.exceptions.PlantingDateException;
 import com.wora.citronix.mappers.TreeMapper;
