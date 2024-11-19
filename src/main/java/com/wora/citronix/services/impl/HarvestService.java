@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.HarvestAlreadyExistsException;
 import com.wora.citronix.exceptions.NotSameSeasonException;
 import com.wora.citronix.mappers.HarvestMapper;
 import com.wora.citronix.models.DTOs.harvestDtos.CreateHarvestDto;
@@ -26,6 +27,9 @@ public class HarvestService implements IHarvestService {
         Harvest harvest = harvestMapper.toEntity(createHarvestDto);
         if (!isSameSeason(createHarvestDto.creationDate(), createHarvestDto.season())){
             throw new NotSameSeasonException("The creation date is not in the same season.");
+        }
+        if (isRepeatedSeason(createHarvestDto.creationDate(), createHarvestDto.season(), createHarvestDto.farmId())){
+            throw new HarvestAlreadyExistsException("A harvest already exists for this season and year.");
         }
         Harvest savedHarvest = harvestRepository.save(harvest);
         return harvestMapper.toDto(savedHarvest);
@@ -66,6 +70,14 @@ public class HarvestService implements IHarvestService {
             default:
                 throw new IllegalArgumentException("Unknown season: " + season);
         }
+    }
+
+    public boolean isRepeatedSeason(LocalDate creationDate, Season season, Long farmId){
+        int year = creationDate.getYear();
+        return harvestRepository.findAll().stream()
+                .filter(harvest -> harvest.getFarm().getId().equals(farmId))
+                .filter(harvest -> harvest.getCreationDate().getYear() == year)
+                .anyMatch(harvest -> harvest.getSeason().equals(season));
     }
 
 
