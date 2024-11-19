@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.exceptions.InsufficientFarmSurfaceException;
 import com.wora.citronix.exceptions.InsufficientFieldSurfaceException;
 import com.wora.citronix.exceptions.PlantingDateException;
@@ -48,7 +49,9 @@ public class TreeService implements ITreeService {
 
     @Override
     public TreeDto findById(Long id) {
-        return null;
+        Tree tree = treeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tree", id));
+        return treeMapper.toDto(tree);
     }
 
     @Override
