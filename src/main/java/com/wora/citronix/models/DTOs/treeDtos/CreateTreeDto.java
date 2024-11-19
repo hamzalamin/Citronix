@@ -1,12 +1,12 @@
 package com.wora.citronix.models.DTOs.treeDtos;
 
-import com.wora.citronix.models.DTOs.fieldDtos.EmbeddedFieldsDto;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
 public record CreateTreeDto(
         @NotNull LocalDate plantingDate,
-        @NotNull EmbeddedFieldsDto field
+        @NotNull @Positive Long field
 ) {
 }
