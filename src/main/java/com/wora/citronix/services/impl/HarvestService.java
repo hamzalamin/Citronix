@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.exceptions.HarvestAlreadyExistsException;
 import com.wora.citronix.exceptions.NotSameSeasonException;
 import com.wora.citronix.mappers.HarvestMapper;
@@ -42,7 +43,9 @@ public class HarvestService implements IHarvestService {
 
     @Override
     public HarvestDto findById(Long id) {
-        return null;
+        Harvest harvest = harvestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Harvest", id));
+        return harvestMapper.toDto(harvest);
     }
 
     @Override
