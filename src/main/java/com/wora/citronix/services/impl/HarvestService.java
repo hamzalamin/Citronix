@@ -14,6 +14,7 @@ import com.wora.citronix.repositories.HarvestRepository;
 import com.wora.citronix.services.inter.IFarmService;
 import com.wora.citronix.services.inter.IHarvestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -68,7 +69,10 @@ public class HarvestService implements IHarvestService {
 
     @Override
     public List<HarvestDto> findAll(Integer pageNumber, Integer size) {
-        return List.of();
+        PageRequest pageable = PageRequest.of(pageNumber, size);
+        return harvestRepository.findAll(pageable).stream()
+                .map(harvestMapper::toDto)
+                .toList();
     }
 
     @Override
