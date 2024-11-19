@@ -32,7 +32,7 @@ public class TreeService implements ITreeService {
     public TreeDto save(CreateTreeDto createTreeDto) {
         Tree tree = treeMapper.toEntity(createTreeDto);
 
-        Field field = fieldService.getFieldEntityById(createTreeDto.field());
+        Field field = fieldService.getFieldEntityById(createTreeDto.fieldId());
 
         if (!isBetweenFiveAndSevenMonths(tree)) {
             throw new PlantingDateException("The planting date must fall within a range of 5 to 7 months from the current date.");
@@ -43,6 +43,7 @@ public class TreeService implements ITreeService {
                 throw new InsufficientFieldSurfaceException("Maximum number of trees (100) exceeded for this field.");
             }
         }
+        tree.setField(field);
         Tree savedTree = treeRepository.save(tree);
         return treeMapper.toDto(savedTree);
     }
@@ -59,7 +60,7 @@ public class TreeService implements ITreeService {
         Tree tree = treeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tree", id));
 
-        Field field = fieldService.getFieldEntityById(updateTreeDto.field());
+        Field field = fieldService.getFieldEntityById(updateTreeDto.fieldId());
 
         if (!isBetweenFiveAndSevenMonths(tree)) {
             throw new PlantingDateException("The planting date must fall within a range of 5 to 7 months from the current date.");

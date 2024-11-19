@@ -7,6 +7,6 @@ import java.time.LocalDate;
 
 public record UpdateTreeDto(
         @NotNull LocalDate plantingDate,
-        @NotNull @Positive Long field
+        @NotNull @Positive Long fieldId
 ) {
 }
