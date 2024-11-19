@@ -56,7 +56,25 @@ public class TreeService implements ITreeService {
 
     @Override
     public TreeDto update(UpdateTreeDto updateTreeDto, Long id) {
-        return null;
+        Tree tree = treeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tree", id));
+
+        Field field = fieldService.getFieldEntityById(updateTreeDto.field());
+
+        if (!isBetweenFiveAndSevenMonths(tree)) {
+            throw new PlantingDateException("The planting date must fall within a range of 5 to 7 months from the current date.");
+        }
+        if (field.getSurface() == 1){
+            int treeCount = treeRepository.countByFieldId(field.getId());
+            if (treeCount >= 100){
+                throw new InsufficientFieldSurfaceException("Maximum number of trees (100) exceeded for this field.");
+            }
+        }
+
+        tree.setField(field);
+        tree.setPlantingDate(updateTreeDto.plantingDate());
+        Tree savedTree = treeRepository.save(tree);
+        return treeMapper.toDto(savedTree);
     }
 
     @Override
