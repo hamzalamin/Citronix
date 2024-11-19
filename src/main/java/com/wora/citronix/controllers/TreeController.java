@@ -49,7 +49,4 @@ public class TreeController {
         treeService.delete(id);
         return new ResponseEntity<>("TREE WITH ID: " + id + " DELETED SUCCESSFULLY !!", HttpStatus.OK);
     }
-
-
-
 }
