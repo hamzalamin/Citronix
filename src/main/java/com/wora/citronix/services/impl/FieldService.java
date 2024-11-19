@@ -116,6 +116,12 @@ public class FieldService implements IFieldService {
                 .sum();
     }
 
+    @Override
+    public Field getFieldEntityById(Long id) {
+        return fieldRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("field", id));
+    }
+
     public Integer calculateFieldsNumber(Farm farm) {
         return fieldRepository.findByFarm(farm).size();
     }
