@@ -77,7 +77,9 @@ public class HarvestService implements IHarvestService {
 
     @Override
     public void delete(Long id) {
-
+        Harvest harvest = harvestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Harvest", id));
+        harvestRepository.delete(harvest);
     }
 
     public boolean isSameSeason(LocalDate creationDate, Season season) {
