@@ -73,11 +73,14 @@ public class TreeService implements ITreeService {
         if (!isBetweenFiveAndSevenMonths(tree)) {
             throw new PlantingDateException("The planting date must fall within a range of 5 to 7 months from the current date.");
         }
-        if (field.getSurface() == 1){
-            int treeCount = treeRepository.countByFieldId(field.getId());
-            if (treeCount >= 100){
-                throw new InsufficientFieldSurfaceException("Maximum number of trees (100) exceeded for this field.");
-            }
+        int treeCount = treeRepository.countByFieldId(field.getId());
+        double treePerHectare = (treeCount + 1) / field.getSurface();
+        double maxAllowedTrees = field.getSurface() * 100;
+
+        if (treePerHectare > 100) {
+            throw new InsufficientFieldSurfaceException(
+                    "The number of trees exceeds the allowable limit for this field. Maximum allowable trees for this surface area: "
+                            + maxAllowedTrees + ".");
         }
 
         tree.setField(field);
