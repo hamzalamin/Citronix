@@ -6,9 +6,11 @@ import com.wora.citronix.mappers.HarvestMapper;
 import com.wora.citronix.models.DTOs.harvestDtos.CreateHarvestDto;
 import com.wora.citronix.models.DTOs.harvestDtos.HarvestDto;
 import com.wora.citronix.models.DTOs.harvestDtos.UpdateHarvestDto;
+import com.wora.citronix.models.entities.Farm;
 import com.wora.citronix.models.entities.Harvest;
 import com.wora.citronix.models.enumes.Season;
 import com.wora.citronix.repositories.HarvestRepository;
+import com.wora.citronix.services.inter.IFarmService;
 import com.wora.citronix.services.inter.IHarvestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.List;
 public class HarvestService implements IHarvestService {
     private final HarvestRepository harvestRepository;
     private final HarvestMapper harvestMapper;
+    private final IFarmService farmService;
 
     @Override
     public HarvestDto save(CreateHarvestDto createHarvestDto) {
@@ -31,6 +34,8 @@ public class HarvestService implements IHarvestService {
         if (isRepeatedSeason(createHarvestDto.creationDate(), createHarvestDto.season(), createHarvestDto.farmId())){
             throw new HarvestAlreadyExistsException("A harvest already exists for this season and year.");
         }
+        Farm farm = farmService.getFarmEntityById(createHarvestDto.farmId());
+        harvest.setFarm(farm);
         Harvest savedHarvest = harvestRepository.save(harvest);
         return harvestMapper.toDto(savedHarvest);
     }
