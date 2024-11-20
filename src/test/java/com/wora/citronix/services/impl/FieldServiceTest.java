@@ -55,7 +55,7 @@ class FieldServiceTest {
     @DisplayName("save() Should Throw Exception When Field Surface Exceeds Half Farm Surface")
     void save_ShouldThrowExceptionWhenFieldSurfaceExceedsHalfFarmSurface() {
         CreateFieldDto createFieldDto = new CreateFieldDto("Large Field", 60.0, 1L);
-        Farm farm = new Farm(1L, "Farm 1", "Localization X", 100.0, LocalDate.now(), List.of(),List.of());
+        Farm farm = new Farm(1L, "Farm 1", "Localization X", 100.0, LocalDate.now(), List.of());
         Field field = new Field();
         field.setName("Large Field");
         field.setSurface(60.0);
