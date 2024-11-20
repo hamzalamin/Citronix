@@ -28,4 +28,10 @@ public class HarvestController {
         return new ResponseEntity<>(harvests, HttpStatus.OK);
     }
 
+    @GetMapping("/harvest/{id}")
+    public ResponseEntity<HarvestDto> findById(@PathVariable Long id){
+        return new ResponseEntity<>(harvestService.findById(id), HttpStatus.CREATED);
+    }
+
+
 }
