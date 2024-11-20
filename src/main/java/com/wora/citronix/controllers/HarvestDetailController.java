@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/harvest/details")
@@ -21,6 +20,12 @@ public class HarvestDetailController {
     @PostMapping
     public ResponseEntity<HarvestDetailsDto> create(@RequestBody @Valid CreateHarvestDetailsDto createHarvestDetailsDto){
         return new ResponseEntity<>(harvestDetailService.save(createHarvestDetailsDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<HarvestDetailsDto>> findAll(@RequestParam int pageNumber, @RequestParam int size){
+        List<HarvestDetailsDto> hds = harvestDetailService.findAll(pageNumber, size);
+        return new ResponseEntity<>(hds, HttpStatus.OK);
     }
 
 }
