@@ -42,4 +42,11 @@ public class HarvestDetailController {
         return new ResponseEntity<>(harvestDetailService.update(updateHarvestDetailsDto, id), HttpStatus.OK);
     }
 
+    @DeleteMapping("/harvest/{harvestId}/tree/{treeId}")
+    public ResponseEntity<String> delete(@PathVariable Long harvestId, @PathVariable Long treeId){
+        HarvestDetailsId id = new HarvestDetailsId(treeId, harvestId);
+        harvestDetailService.delete(id);
+        return new ResponseEntity<>("Harvest details WITH ID: " + id + " DELETED SUCCESSFULLY !!", HttpStatus.OK);
+    }
+
 }
