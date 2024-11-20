@@ -58,8 +58,8 @@ class FarmServiceTest {
     void findById_ShouldReturnEntityWhenIdIsValid() {
         Long id = 1L;
         LocalDate creationDate = LocalDate.parse("2020-12-12");
-        Farm farm = new Farm(id, "azura", "Ait melloul", 200.10, creationDate, List.of(),List.of());
-        FarmDto farmDto = new FarmDto(id, "azura", "Ait melloul", 200.10, creationDate, List.of(),List.of());
+        Farm farm = new Farm(id, "azura", "Ait melloul", 200.10, creationDate,List.of());
+        FarmDto farmDto = new FarmDto(id, "azura", "Ait melloul", 200.10, creationDate, List.of());
 
         when(farmRepository.findById(id)).thenReturn(Optional.of(farm));
         when(farmMapper.toDto(farm)).thenReturn(farmDto);
@@ -79,8 +79,8 @@ class FarmServiceTest {
         Double surface = 100.0;
         LocalDate creationDate = LocalDate.of(2023, 1, 1);
 
-        List<Farm> farms = List.of(new Farm(1L, name, localization, surface, creationDate, List.of(),List.of()));
-        List<FarmDto> expectedDtos = List.of(new FarmDto(1L, name, localization, surface, creationDate, List.of(),List.of()));
+        List<Farm> farms = List.of(new Farm(1L, name, localization, surface, creationDate, List.of()));
+        List<FarmDto> expectedDtos = List.of(new FarmDto(1L, name, localization, surface, creationDate, List.of()));
 
         when(farmRepository.search(name, localization, surface, creationDate)).thenReturn(farms);
         when(farmMapper.toDto(any(Farm.class))).thenReturn(expectedDtos.getFirst());
@@ -120,8 +120,8 @@ class FarmServiceTest {
         Double surface = null;
         LocalDate creationDate = null;
 
-        List<Farm> farms = List.of(new Farm(2L, "Farm B", "Location Y", 200.0, null, List.of(),List.of()));
-        List<FarmDto> expectedDtos = List.of(new FarmDto(2L, "Farm B", "Location Y", 200.0, null, List.of(), List.of()));
+        List<Farm> farms = List.of(new Farm(2L, "Farm B", "Location Y", 200.0, null, List.of()));
+        List<FarmDto> expectedDtos = List.of(new FarmDto(2L, "Farm B", "Location Y", 200.0, null,  List.of()));
 
         when(farmRepository.search(name, localization, surface, creationDate)).thenReturn(farms);
         when(farmMapper.toDto(any(Farm.class))).thenReturn(expectedDtos.getFirst());
