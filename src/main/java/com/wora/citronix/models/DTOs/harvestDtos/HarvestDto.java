@@ -1,6 +1,5 @@
 package com.wora.citronix.models.DTOs.harvestDtos;
 
-import com.wora.citronix.models.DTOs.farmDtos.EmbeddedFarmDto;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.EmbeddedHarvestDetailDto;
 import com.wora.citronix.models.enumes.Season;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +12,6 @@ public record HarvestDto(
         @NotNull @Positive Long id,
         @NotNull LocalDate creationDate,
         @NotNull Season season,
-        List<EmbeddedHarvestDetailDto> harvestDetails,
-        EmbeddedFarmDto farm
+        List<EmbeddedHarvestDetailDto> harvestDetails
 ) {
 }

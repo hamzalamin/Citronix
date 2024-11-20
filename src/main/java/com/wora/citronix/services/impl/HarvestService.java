@@ -33,11 +33,6 @@ public class HarvestService implements IHarvestService {
         if (!isSameSeason(createHarvestDto.creationDate(), createHarvestDto.season())){
             throw new NotSameSeasonException("The creation date is not in the same season.");
         }
-        if (isRepeatedSeason(createHarvestDto.creationDate(), createHarvestDto.season(), createHarvestDto.farmId())){
-            throw new HarvestAlreadyExistsException("A harvest already exists for this season and year.");
-        }
-        Farm farm = farmService.getFarmEntityById(createHarvestDto.farmId());
-        harvest.setFarm(farm);
         Harvest savedHarvest = harvestRepository.save(harvest);
         return harvestMapper.toDto(savedHarvest);
     }
@@ -56,11 +51,7 @@ public class HarvestService implements IHarvestService {
         if (!isSameSeason(updateHarvestDto.creationDate(), updateHarvestDto.season())){
             throw new NotSameSeasonException("The creation date is not in the same season.");
         }
-        if (isRepeatedSeason(updateHarvestDto.creationDate(), updateHarvestDto.season(), updateHarvestDto.farmId())){
-            throw new HarvestAlreadyExistsException("A harvest already exists for this season and year.");
-        }
-        Farm farm = farmService.getFarmEntityById(updateHarvestDto.farmId());
-        harvest.setFarm(farm);
+
         harvest.setCreationDate(updateHarvestDto.creationDate());
         harvest.setSeason(updateHarvestDto.season());
         Harvest savedHarvest = harvestRepository.save(harvest);
@@ -97,14 +88,6 @@ public class HarvestService implements IHarvestService {
             default:
                 throw new IllegalArgumentException("Unknown season: " + season);
         }
-    }
-
-    public boolean isRepeatedSeason(LocalDate creationDate, Season season, Long farmId){
-        int year = creationDate.getYear();
-        return harvestRepository.findAll().stream()
-                .filter(harvest -> harvest.getFarm().getId().equals(farmId))
-                .filter(harvest -> harvest.getCreationDate().getYear() == year)
-                .anyMatch(harvest -> harvest.getSeason().equals(season));
     }
 
 

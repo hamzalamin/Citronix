@@ -15,7 +15,6 @@ public record FarmDto(
         @NotBlank String localization,
         @NotNull @Positive Double surface,
         @NotNull LocalDate creationDate,
-        List<EmbeddedFieldsDto> fields,
-        List<EmbeddedHarvestDto> harvests
+        List<EmbeddedFieldsDto> fields
 ) {
 }
