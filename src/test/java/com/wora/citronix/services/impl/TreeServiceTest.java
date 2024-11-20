@@ -68,7 +68,7 @@ class TreeServiceTest {
     void save_ShouldThrowExceptionWhenDateIsNotBetweenFiveAndSevenMonths() {
         LocalDate plantingDate = LocalDate.parse("2020-02-02");
         LocalDate creationDate = LocalDate.parse("2020-01-01");
-        Farm farm = new Farm(1L, "NAME Y", "LOCAL X", 200.0, creationDate, List.of(),List.of());
+        Farm farm = new Farm(1L, "NAME Y", "LOCAL X", 200.0, creationDate,List.of());
         Field field = new Field(1L, "name x", 12.2, farm, List.of());
 
         given(fieldService.getFieldEntityById(field.getId())).willReturn(field);
@@ -89,7 +89,7 @@ class TreeServiceTest {
     void save_ShouldThrowExceptionWhenMaxNumberOfTreesExceeded() {
         LocalDate plantingDate = LocalDate.parse("2024-06-06");
         LocalDate creationDate = LocalDate.parse("2023-12-01");
-        Farm farm = new Farm(1L, "Farm Y", "Local X", 200.0, creationDate, List.of(),List.of());
+        Farm farm = new Farm(1L, "Farm Y", "Local X", 200.0, creationDate,List.of());
         Field field = new Field(1L, "Field X", 1.0, farm, List.of());
         Tree tree = new Tree(null, plantingDate, field, List.of());
 
