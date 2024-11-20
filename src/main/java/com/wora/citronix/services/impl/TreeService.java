@@ -104,6 +104,11 @@ public class TreeService implements ITreeService {
         treeRepository.delete(tree);
     }
 
+    @Override
+    public Tree findTreeById(Long id){
+        return treeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Tree", id));
+    }
+
     public boolean isBetweenFiveAndSevenMonths(Tree tree) {
         LocalDate plantingDate = tree.getPlantingDate();
         LocalDate currentDate = LocalDate.now();
