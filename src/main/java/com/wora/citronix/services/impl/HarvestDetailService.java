@@ -89,7 +89,9 @@ public class HarvestDetailService implements IHarvestDetailService {
     }
 
     @Override
-    public void delete(EmbeddedHarvestDto id) {
-
+    public void delete(HarvestDetailsId id) {
+        HarvestDetail harvestDetail = harvestDetailsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Harvest Details", id));
+        harvestDetailsRepository.delete(harvestDetail);
     }
 }
