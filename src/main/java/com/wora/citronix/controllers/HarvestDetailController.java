@@ -2,6 +2,7 @@ package com.wora.citronix.controllers;
 
 import com.wora.citronix.models.DTOs.harvestDetailDtos.CreateHarvestDetailsDto;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.HarvestDetailsDto;
+import com.wora.citronix.models.DTOs.harvestDetailDtos.UpdateHarvestDetailsDto;
 import com.wora.citronix.models.entities.embeddables.HarvestDetailsId;
 import com.wora.citronix.services.inter.IHarvestDetailService;
 import jakarta.validation.Valid;
@@ -29,11 +30,16 @@ public class HarvestDetailController {
         return new ResponseEntity<>(hds, HttpStatus.OK);
     }
 
-
     @GetMapping("/harvest/{harvestId}/tree/{treeId}")
     public ResponseEntity<HarvestDetailsDto> findById(@PathVariable Long harvestId, @PathVariable Long treeId){
         HarvestDetailsId id = new HarvestDetailsId(treeId, harvestId);
         return new ResponseEntity<>(harvestDetailService.findById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/harvest/{harvestId}/tree/{treeId}")
+    public ResponseEntity<HarvestDetailsDto> update(@RequestBody @Valid UpdateHarvestDetailsDto updateHarvestDetailsDto, @PathVariable Long harvestId, @PathVariable Long treeId){
+        HarvestDetailsId id = new HarvestDetailsId(treeId, harvestId);
+        return new ResponseEntity<>(harvestDetailService.update(updateHarvestDetailsDto, id), HttpStatus.OK);
     }
 
 }
