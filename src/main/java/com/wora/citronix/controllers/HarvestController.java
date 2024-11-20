@@ -39,5 +39,9 @@ public class HarvestController {
         return new ResponseEntity<>(harvestService.update(updateHarvestDto, id), HttpStatus.CREATED);
     }
 
-
+    @DeleteMapping("/harvest/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        harvestService.delete(id);
+        return new ResponseEntity<>("HARVEST WITH ID: " + id + " DELETED SUCCESSFULLY !!", HttpStatus.OK);
+    }
 }
