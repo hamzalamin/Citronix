@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.exceptions.PlantingDateException;
 import com.wora.citronix.mappers.HarvestDetailsMapper;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.CreateHarvestDetailsDto;
@@ -50,12 +51,14 @@ public class HarvestDetailService implements IHarvestDetailService {
     }
 
     @Override
-    public HarvestDetailsDto findById(Long aLong) {
-        return null;
+    public HarvestDetailsDto findById(Long id) {
+        HarvestDetail harvestDetail = harvestDetailsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Harvest Details", id));
+        return harvestDetailsMapper.toDto(harvestDetail);
     }
 
     @Override
-    public HarvestDetailsDto update(UpdateHarvestDetailsDto updateHarvestDetailsDto, Long aLong) {
+    public HarvestDetailsDto update(UpdateHarvestDetailsDto updateHarvestDetailsDto, Long id) {
         return null;
     }
 
@@ -65,7 +68,7 @@ public class HarvestDetailService implements IHarvestDetailService {
     }
 
     @Override
-    public void delete(Long aLong) {
+    public void delete(Long id) {
 
     }
 }
