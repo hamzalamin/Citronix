@@ -6,6 +6,7 @@ import com.wora.citronix.mappers.HarvestDetailsMapper;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.CreateHarvestDetailsDto;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.HarvestDetailsDto;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.UpdateHarvestDetailsDto;
+import com.wora.citronix.models.DTOs.harvestDtos.EmbeddedHarvestDto;
 import com.wora.citronix.models.entities.Harvest;
 import com.wora.citronix.models.entities.HarvestDetail;
 import com.wora.citronix.models.entities.Tree;
@@ -51,16 +52,32 @@ public class HarvestDetailService implements IHarvestDetailService {
     }
 
     @Override
-    public HarvestDetailsDto findById(Long id) {
+    public HarvestDetailsDto findById(HarvestDetailsId id) {
         HarvestDetail harvestDetail = harvestDetailsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Harvest Details", id));
         return harvestDetailsMapper.toDto(harvestDetail);
     }
 
     @Override
-    public HarvestDetailsDto update(UpdateHarvestDetailsDto updateHarvestDetailsDto, Long id) {
-        return null;
-    }
+    public HarvestDetailsDto update(UpdateHarvestDetailsDto updateHarvestDetailsDto, HarvestDetailsId id) {
+        HarvestDetail harvestDetail = harvestDetailsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Harvest Details", id));
+        Long treeId = updateHarvestDetailsDto.treeId();
+        Long harvestId = updateHarvestDetailsDto.harvestId();
+
+        Harvest harvest = harvestService.findEntityById(harvestId);
+        Tree tree = treeService.findTreeById(treeId);
+        Season harvestSeason = harvest.getSeason();
+
+        boolean exists = harvestDetailsRepository.existsByTreeIdAndHarvestSeason(treeId, harvestSeason);
+        if (exists) {
+            throw new PlantingDateException("This tree has already been harvested in the given season.");
+        }
+        harvestDetail.setId(id);
+        harvestDetail.setHarvest(harvest);
+        harvestDetail.setTree(tree);
+        HarvestDetail createdHarvestDetail = harvestDetailsRepository.save(harvestDetail);
+        return harvestDetailsMapper.toDto(createdHarvestDetail);    }
 
     @Override
     public List<HarvestDetailsDto> findAll(Integer pageNumber, Integer size) {
@@ -68,7 +85,7 @@ public class HarvestDetailService implements IHarvestDetailService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(EmbeddedHarvestDto id) {
 
     }
 }
