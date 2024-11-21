@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.mappers.SaleMapper;
 import com.wora.citronix.models.DTOs.saleDtos.CreateSaleDto;
 import com.wora.citronix.models.DTOs.saleDtos.SaleDto;
@@ -33,12 +34,14 @@ public class SaleService implements ISaleService{
     }
 
     @Override
-    public SaleDto findById(Long aLong) {
-        return null;
+    public SaleDto findById(Long id) {
+        Sale sale = saleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Sale", id));
+        return saleMapper.toDto(sale);
     }
 
     @Override
-    public SaleDto update(UpdateSaleDto updateSaleDto, Long aLong) {
+    public SaleDto update(UpdateSaleDto updateSaleDto, Long id) {
         return null;
     }
 
@@ -48,7 +51,7 @@ public class SaleService implements ISaleService{
     }
 
     @Override
-    public void delete(Long aLong) {
+    public void delete(Long id) {
 
     }
 }
