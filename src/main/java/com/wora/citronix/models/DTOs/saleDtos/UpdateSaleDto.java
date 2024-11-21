@@ -10,6 +10,7 @@ public record UpdateSaleDto(
         @NotBlank String clientName,
         @NotNull Double unitPrice,
         @NotNull LocalDate saleDate,
+        @NotNull @Positive Double saleQuantity,
         @NotNull @Positive Long harvestId
 ) {
 }

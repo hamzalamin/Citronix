@@ -10,6 +10,7 @@ public record EmbeddedSaleDto(
         @NotNull @Positive Long id,
         @NotBlank String clientName,
         @NotNull Double unitPrice,
-        @NotNull LocalDate saleDate
+        @NotNull LocalDate saleDate,
+        @NotNull @Positive Double saleQuantity
 ) {
 }

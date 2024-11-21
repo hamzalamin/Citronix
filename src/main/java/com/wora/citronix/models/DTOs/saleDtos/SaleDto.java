@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public record SaleDto(
         @NotNull @Positive Long id,
         @NotBlank String clientName,
         @NotNull Double unitPrice,
         @NotNull LocalDate saleDate,
+        @NotNull @Positive Double saleQuantity,
         EmbeddedHarvestDto harvest
 ) {
 }
