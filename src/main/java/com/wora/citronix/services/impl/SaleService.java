@@ -16,19 +16,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SaleService implements ISaleService {
+public class SaleService implements ISaleService{
     private final SaleRepository saleRepository;
     private final SaleMapper saleMapper;
     private final IHarvestService harvestService;
+    private final SaleQuantityValidatorService saleQuantityValidatorService;
 
     @Override
     public SaleDto save(CreateSaleDto createSaleDto) {
         Sale sale = saleMapper.toEntity(createSaleDto);
         Harvest harvest = harvestService.findEntityById(createSaleDto.harvestId());
-        if (harvest){
-
-        }
-
+        saleQuantityValidatorService.ensureWantedQuantityExist(createSaleDto.saleQuantity(), createSaleDto.harvestId());
+        sale.setHarvest(harvest);
         Sale savedSale = saleRepository.save(sale);
         return saleMapper.toDto(savedSale);
     }

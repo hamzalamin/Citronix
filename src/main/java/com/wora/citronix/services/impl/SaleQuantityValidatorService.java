@@ -7,6 +7,8 @@ import com.wora.citronix.services.inter.ISaleQuantityValidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class SaleQuantityValidatorService implements ISaleQuantityValidatorService {
@@ -16,8 +18,10 @@ public class SaleQuantityValidatorService implements ISaleQuantityValidatorServi
     @Override
     public void ensureWantedQuantityExist(Double wantedQuantity, Long harvestId) {
         Double harvestQuantity = harvestDetailsRepository.getSumQuantityByHarvestId(harvestId);
-        Double soldQuantity = saleRepository.getSumSoldQuantityByHarvestId(harvestId);
-        Double remainingQuantity = harvestQuantity - soldQuantity;
+        Double soldQuantity = Optional.ofNullable(saleRepository.getSumSoldQuantityByHarvestId(harvestId))
+                .orElse(0.0);
+
+        Double remainingQuantity = harvestQuantity - soldQuantity ;
 
         if (remainingQuantity - wantedQuantity < 0){
             throw new PlantingDateException("the wanted quantity does not exist");
