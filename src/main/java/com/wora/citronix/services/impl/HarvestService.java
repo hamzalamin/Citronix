@@ -1,17 +1,14 @@
 package com.wora.citronix.services.impl;
 
 import com.wora.citronix.exceptions.EntityNotFoundException;
-import com.wora.citronix.exceptions.HarvestAlreadyExistsException;
 import com.wora.citronix.exceptions.NotSameSeasonException;
 import com.wora.citronix.mappers.HarvestMapper;
 import com.wora.citronix.models.DTOs.harvestDtos.CreateHarvestDto;
 import com.wora.citronix.models.DTOs.harvestDtos.HarvestDto;
 import com.wora.citronix.models.DTOs.harvestDtos.UpdateHarvestDto;
-import com.wora.citronix.models.entities.Farm;
 import com.wora.citronix.models.entities.Harvest;
 import com.wora.citronix.models.enumes.Season;
 import com.wora.citronix.repositories.HarvestRepository;
-import com.wora.citronix.services.inter.IFarmService;
 import com.wora.citronix.services.inter.IHarvestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +22,6 @@ import java.util.List;
 public class HarvestService implements IHarvestService {
     private final HarvestRepository harvestRepository;
     private final HarvestMapper harvestMapper;
-    private final IFarmService farmService;
 
     @Override
     public HarvestDto save(CreateHarvestDto createHarvestDto) {

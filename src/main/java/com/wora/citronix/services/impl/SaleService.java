@@ -1,8 +1,13 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.mappers.SaleMapper;
 import com.wora.citronix.models.DTOs.saleDtos.CreateSaleDto;
 import com.wora.citronix.models.DTOs.saleDtos.SaleDto;
 import com.wora.citronix.models.DTOs.saleDtos.UpdateSaleDto;
+import com.wora.citronix.models.entities.Harvest;
+import com.wora.citronix.models.entities.Sale;
+import com.wora.citronix.repositories.SaleRepository;
+import com.wora.citronix.services.inter.IHarvestService;
 import com.wora.citronix.services.inter.ISaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,9 +17,20 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SaleService implements ISaleService {
+    private final SaleRepository saleRepository;
+    private final SaleMapper saleMapper;
+    private final IHarvestService harvestService;
+
     @Override
     public SaleDto save(CreateSaleDto createSaleDto) {
-        return null;
+        Sale sale = saleMapper.toEntity(createSaleDto);
+        Harvest harvest = harvestService.findEntityById(createSaleDto.harvestId());
+        if (harvest){
+
+        }
+
+        Sale savedSale = saleRepository.save(sale);
+        return saleMapper.toDto(savedSale);
     }
 
     @Override
