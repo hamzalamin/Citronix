@@ -30,4 +30,8 @@ public class Sale {
     @NotNull
     private LocalDate SaleDate;
 
+    @ManyToOne
+    @JoinColumn(name = "harvest_id")
+    private Harvest harvest;
+
 }
