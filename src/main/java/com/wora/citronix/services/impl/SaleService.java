@@ -13,11 +13,12 @@ import com.wora.citronix.services.inter.ISaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SaleService implements ISaleService{
+public class SaleService implements ISaleService {
     private final SaleRepository saleRepository;
     private final SaleMapper saleMapper;
     private final IHarvestService harvestService;
@@ -25,10 +26,15 @@ public class SaleService implements ISaleService{
 
     @Override
     public SaleDto save(CreateSaleDto createSaleDto) {
-        Sale sale = saleMapper.toEntity(createSaleDto);
         Harvest harvest = harvestService.findEntityById(createSaleDto.harvestId());
         saleQuantityValidatorService.ensureWantedQuantityExist(createSaleDto.saleQuantity(), createSaleDto.harvestId());
-        sale.setHarvest(harvest);
+        Sale sale = Sale.builder()
+                .harvest(harvest)
+                .clientName(createSaleDto.clientName())
+                .saleQuantity(createSaleDto.saleQuantity())
+                .saleDate(createSaleDto.saleDate())
+                .unitPrice(createSaleDto.unitPrice())
+                .build();
         Sale savedSale = saleRepository.save(sale);
         return saleMapper.toDto(savedSale);
     }
@@ -42,7 +48,17 @@ public class SaleService implements ISaleService{
 
     @Override
     public SaleDto update(UpdateSaleDto updateSaleDto, Long id) {
-        return null;
+        Sale sale = saleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Sale", id));
+        Harvest harvest = harvestService.findEntityById(updateSaleDto.harvestId());
+        saleQuantityValidatorService.ensureWantedQuantityExist(updateSaleDto.saleQuantity(), updateSaleDto.harvestId());
+        sale.setHarvest(harvest)
+                .setSaleDate(updateSaleDto.saleDate())
+                .setClientName(updateSaleDto.clientName())
+                .setSaleQuantity(updateSaleDto.saleQuantity())
+                .setUnitPrice(updateSaleDto.unitPrice());
+        Sale savedSale = saleRepository.save(sale);
+        return saleMapper.toDto(savedSale);
     }
 
     @Override
