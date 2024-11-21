@@ -2,6 +2,7 @@ package com.wora.citronix.controllers;
 
 import com.wora.citronix.models.DTOs.saleDtos.CreateSaleDto;
 import com.wora.citronix.models.DTOs.saleDtos.SaleDto;
+import com.wora.citronix.models.DTOs.saleDtos.UpdateSaleDto;
 import com.wora.citronix.services.inter.ISaleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,11 @@ public class SaleController {
     public ResponseEntity<SaleDto> findById(@PathVariable Long id){
         return new ResponseEntity<>(saleService.findById(id), HttpStatus.OK);
     }
+
+    @PutMapping("/sale/{id}")
+    public ResponseEntity<SaleDto> update(@RequestBody @Valid UpdateSaleDto updateSaleDto, @PathVariable Long id){
+        return new ResponseEntity<>(saleService.update(updateSaleDto, id), HttpStatus.OK);
+    }
+
 
 }
