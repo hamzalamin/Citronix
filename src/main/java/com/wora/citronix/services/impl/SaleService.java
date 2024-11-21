@@ -51,7 +51,7 @@ public class SaleService implements ISaleService {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Sale", id));
         Harvest harvest = harvestService.findEntityById(updateSaleDto.harvestId());
-        saleQuantityValidatorService.ensureWantedQuantityExist(updateSaleDto.saleQuantity(), updateSaleDto.harvestId());
+        saleQuantityValidatorService.ensureWantedQuantityExistForUpdate(updateSaleDto.saleQuantity(), updateSaleDto.harvestId(), sale.getId());
         sale.setHarvest(harvest)
                 .setSaleDate(updateSaleDto.saleDate())
                 .setClientName(updateSaleDto.clientName())
