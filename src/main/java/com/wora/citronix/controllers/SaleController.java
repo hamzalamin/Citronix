@@ -28,4 +28,9 @@ public class SaleController {
         return new ResponseEntity<>(sales, HttpStatus.OK);
     }
 
+    @GetMapping("/sale/{id}")
+    public ResponseEntity<SaleDto> findById(@PathVariable Long id){
+        return new ResponseEntity<>(saleService.findById(id), HttpStatus.OK);
+    }
+
 }
