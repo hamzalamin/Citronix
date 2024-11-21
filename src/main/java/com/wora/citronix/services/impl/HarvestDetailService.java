@@ -68,17 +68,14 @@ public class HarvestDetailService implements IHarvestDetailService {
 
         Harvest harvest = harvestService.findEntityById(harvestId);
         Tree tree = treeService.findTreeById(treeId);
-        Season harvestSeason = harvest.getSeason();
 
-        boolean exists = harvestDetailsRepository.existsByTreeIdAndHarvestSeason(treeId, harvestSeason);
-        if (exists) {
-            throw new PlantingDateException("This tree has already been harvested in the given season.");
-        }
         harvestDetail.setId(id);
         harvestDetail.setHarvest(harvest);
         harvestDetail.setTree(tree);
+        harvestDetail.setQuantity(updateHarvestDetailsDto.quantity());
         HarvestDetail createdHarvestDetail = harvestDetailsRepository.save(harvestDetail);
-        return harvestDetailsMapper.toDto(createdHarvestDetail);    }
+        return harvestDetailsMapper.toDto(createdHarvestDetail);
+    }
 
     @Override
     public List<HarvestDetailsDto> findAll(Integer pageNumber, Integer size) {

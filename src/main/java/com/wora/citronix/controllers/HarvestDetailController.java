@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/api/harvest/details")
+@RequestMapping("/api/v1/harvest/details")
 @RequiredArgsConstructor
 public class HarvestDetailController {
     private final IHarvestDetailService harvestDetailService;
