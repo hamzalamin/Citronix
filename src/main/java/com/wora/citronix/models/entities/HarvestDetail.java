@@ -29,4 +29,11 @@ public class HarvestDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tree_id", insertable = false, updatable = false)
     private Tree tree;
+
+    public HarvestDetail(Harvest harvest, Tree tree, @NotNull @Positive Integer quantity) {
+        this.id = new HarvestDetailsId(tree.getId(), harvest.getId());
+        this.harvest = harvest;
+        this.tree = tree;
+        this.quantity = quantity;
+    }
 }

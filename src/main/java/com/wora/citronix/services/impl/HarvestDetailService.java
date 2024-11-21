@@ -6,7 +6,6 @@ import com.wora.citronix.mappers.HarvestDetailsMapper;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.CreateHarvestDetailsDto;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.HarvestDetailsDto;
 import com.wora.citronix.models.DTOs.harvestDetailDtos.UpdateHarvestDetailsDto;
-import com.wora.citronix.models.DTOs.harvestDtos.EmbeddedHarvestDto;
 import com.wora.citronix.models.entities.Harvest;
 import com.wora.citronix.models.entities.HarvestDetail;
 import com.wora.citronix.models.entities.Tree;
@@ -32,22 +31,19 @@ public class HarvestDetailService implements IHarvestDetailService {
 
     @Override
     public HarvestDetailsDto save(CreateHarvestDetailsDto createHarvestDetailsDto) {
-        HarvestDetail harvestDetail = harvestDetailsMapper.toEntity(createHarvestDetailsDto);
         Long treeId = createHarvestDetailsDto.treeId();
         Long harvestId = createHarvestDetailsDto.harvestId();
 
         Harvest harvest = harvestService.findEntityById(harvestId);
         Tree tree = treeService.findTreeById(treeId);
-        HarvestDetailsId id = new HarvestDetailsId(treeId, harvestId);
         Season harvestSeason = harvest.getSeason();
 
         boolean exists = harvestDetailsRepository.existsByTreeIdAndHarvestSeason(treeId, harvestSeason);
         if (exists) {
             throw new PlantingDateException("This tree has already been harvested in the given season.");
         }
-        harvestDetail.setId(id);
-        harvestDetail.setHarvest(harvest);
-        harvestDetail.setTree(tree);
+
+        HarvestDetail harvestDetail = new HarvestDetail(harvest, tree, createHarvestDetailsDto.quantity());
         HarvestDetail createdHarvestDetail = harvestDetailsRepository.save(harvestDetail);
         return harvestDetailsMapper.toDto(createdHarvestDetail);
     }
