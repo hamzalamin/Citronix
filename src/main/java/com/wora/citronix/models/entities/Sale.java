@@ -28,7 +28,7 @@ public class Sale {
 
     @Column(name = "sale_date")
     @NotNull
-    private LocalDate SaleDate;
+    private LocalDate saleDate;
 
     @ManyToOne
     @JoinColumn(name = "harvest_id")
