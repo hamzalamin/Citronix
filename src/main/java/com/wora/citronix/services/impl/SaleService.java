@@ -72,6 +72,8 @@ public class SaleService implements ISaleService {
 
     @Override
     public void delete(Long id) {
-
+        Sale sale = saleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Sale", id));
+        saleRepository.delete(sale);
     }
 }
