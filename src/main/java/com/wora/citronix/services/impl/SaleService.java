@@ -11,6 +11,7 @@ import com.wora.citronix.repositories.SaleRepository;
 import com.wora.citronix.services.inter.IHarvestService;
 import com.wora.citronix.services.inter.ISaleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -63,7 +64,10 @@ public class SaleService implements ISaleService {
 
     @Override
     public List<SaleDto> findAll(Integer pageNumber, Integer size) {
-        return List.of();
+        PageRequest pageable = PageRequest.of(pageNumber, size);
+        return saleRepository.findAll(pageable).stream()
+                .map(saleMapper::toDto)
+                .toList();
     }
 
     @Override
