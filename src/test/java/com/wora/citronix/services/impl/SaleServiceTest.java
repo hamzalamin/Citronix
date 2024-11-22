@@ -19,8 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.in;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -56,8 +55,8 @@ class SaleServiceTest {
     }
 
     @Test
-    @DisplayName("save Should Throw Planting Date Exception When the Quantity Wanted mora then Quantity Harvested")
-    void save(){
+    @DisplayName("save Should Throw Planting Date Exception When the Quantity Wanted more then Quantity Harvested")
+    void save_ShouldThrowPlantingDateExceptionWhenTheQuantityWantedMoreThenQuantityHarvested(){
         LocalDate saleDate = LocalDate.parse("2024-07-07");
         LocalDate creationDate = LocalDate.parse("2024-01-01");
 
