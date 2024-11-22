@@ -4,6 +4,7 @@ import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.exceptions.PlantingDateException;
 import com.wora.citronix.mappers.SaleMapper;
 import com.wora.citronix.models.DTOs.saleDtos.CreateSaleDto;
+import com.wora.citronix.models.entities.Field;
 import com.wora.citronix.models.entities.Harvest;
 import com.wora.citronix.models.enumes.Season;
 import com.wora.citronix.repositories.SaleRepository;
@@ -43,8 +44,9 @@ class SaleServiceTest {
     void save_ShouldThrownEntityNotFoundExceptionWhenHarvestIdNotFound() {
         LocalDate saleDate = LocalDate.parse("2024-07-07");
         LocalDate creationDate = LocalDate.parse("2024-01-01");
+        Field field = new Field();
 
-        Harvest harvest = new Harvest(1L ,creationDate, Season.WINTER, List.of(), List.of());
+        Harvest harvest = new Harvest(1L ,creationDate, Season.WINTER, List.of(), field, List.of());
         CreateSaleDto createSaleDto = new  CreateSaleDto("HAMZA", 12.2, saleDate, 12.2, harvest.getId());
 
         given(harvestService.findEntityById(harvest.getId())).willThrow(new EntityNotFoundException("Harvest", harvest.getId()));
@@ -59,8 +61,9 @@ class SaleServiceTest {
     void save_ShouldThrowPlantingDateExceptionWhenTheQuantityWantedMoreThenQuantityHarvested(){
         LocalDate saleDate = LocalDate.parse("2024-07-07");
         LocalDate creationDate = LocalDate.parse("2024-01-01");
+        Field field = new Field();
 
-        Harvest harvest = new Harvest(1L ,creationDate, Season.WINTER, List.of(), List.of());
+        Harvest harvest = new Harvest(1L ,creationDate, Season.WINTER, List.of(), field, List.of());
         CreateSaleDto createSaleDto = new  CreateSaleDto("HAMZA", 12.2, saleDate, 12.2, harvest.getId());
 
         given(harvestService.findEntityById(harvest.getId())).willReturn(harvest);

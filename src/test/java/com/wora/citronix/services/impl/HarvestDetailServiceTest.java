@@ -62,9 +62,10 @@ class HarvestDetailServiceTest {
         Long harvestId = 1L;
         Long treeId = 1L;
         LocalDate creationDate = LocalDate.parse("2020-07-07");
+        Field field = new Field();
 
         CreateHarvestDetailsDto createHarvestDetailsDto = new CreateHarvestDetailsDto(treeId, harvestId, 22);
-        Harvest harvest = new Harvest(harvestId, creationDate, Season.SUMMER, List.of(), List.of());
+        Harvest harvest = new Harvest(harvestId, creationDate, Season.SUMMER, List.of(), field, List.of());
 
         given(harvestService.findEntityById(harvestId)).willReturn(harvest);
         given(treeService.findTreeById(treeId)).willThrow(new EntityNotFoundException("Tree", treeId));
@@ -85,7 +86,7 @@ class HarvestDetailServiceTest {
         Field field = new Field();
 
         CreateHarvestDetailsDto createHarvestDetailsDto = new CreateHarvestDetailsDto(treeId, harvestId, 22);
-        Harvest harvest = new Harvest(harvestId, creationDate, Season.SUMMER, List.of(),  List.of());
+        Harvest harvest = new Harvest(harvestId, creationDate, Season.SUMMER, List.of(), field,  List.of());
         Tree tree = new Tree(treeId, creationDate, field, List.of());
 
         given(harvestService.findEntityById(harvestId)).willReturn(harvest);
@@ -107,7 +108,7 @@ class HarvestDetailServiceTest {
         Field field = new Field();
 
         CreateHarvestDetailsDto createHarvestDetailsDto = new CreateHarvestDetailsDto(treeId, harvestId, 22);
-        Harvest harvest = new Harvest(harvestId, creationDate, Season.SUMMER, List.of(),List.of());
+        Harvest harvest = new Harvest(harvestId, creationDate, Season.SUMMER, List.of(), field, List.of());
         Tree tree = new Tree(treeId, creationDate, field, List.of());
         HarvestDetail harvestDetail = new HarvestDetail(harvest, tree, 22);
         HarvestDetailsDto harvestDetailsDto = new HarvestDetailsDto(harvestDetail.getId(), 22, null, null);

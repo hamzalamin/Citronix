@@ -1,14 +1,17 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.DuplicateHarvestException;
 import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.exceptions.NotSameSeasonException;
 import com.wora.citronix.mappers.HarvestMapper;
 import com.wora.citronix.models.DTOs.harvestDtos.CreateHarvestDto;
 import com.wora.citronix.models.DTOs.harvestDtos.HarvestDto;
 import com.wora.citronix.models.DTOs.harvestDtos.UpdateHarvestDto;
+import com.wora.citronix.models.entities.Field;
 import com.wora.citronix.models.entities.Harvest;
 import com.wora.citronix.models.enumes.Season;
 import com.wora.citronix.repositories.HarvestRepository;
+import com.wora.citronix.services.inter.IFieldService;
 import com.wora.citronix.services.inter.IHarvestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -22,14 +25,21 @@ import java.util.List;
 public class HarvestService implements IHarvestService {
     private final HarvestRepository harvestRepository;
     private final HarvestMapper harvestMapper;
+    private final IFieldService fieldService;
 
     @Override
     public HarvestDto save(CreateHarvestDto createHarvestDto) {
         Harvest harvest = harvestMapper.toEntity(createHarvestDto);
+        Field field = fieldService.getFieldEntityById(createHarvestDto.fieldId());
         if (!isSameSeason(createHarvestDto.creationDate(), createHarvestDto.season())){
             throw new NotSameSeasonException("The creation date is not in the same season.");
         }
-//        toDo : khassna n3erfo lharvest dyal ina farm bach man9edrouch nharvestiw 2 merat f nefs season
+
+        if (isFieldHarvestedTooTimes(createHarvestDto.fieldId(), createHarvestDto.season(), createHarvestDto.creationDate())) {
+            throw new DuplicateHarvestException("The field has already been harvested on this date during this season.");
+        }
+
+        harvest.setField(field);
         Harvest savedHarvest = harvestRepository.save(harvest);
         return harvestMapper.toDto(savedHarvest);
     }
@@ -73,6 +83,10 @@ public class HarvestService implements IHarvestService {
     @Override
     public Harvest findEntityById(Long id){
         return harvestRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Harvest", id));
+    }
+
+    public boolean isFieldHarvestedTooTimes(Long fieldId, Season season, LocalDate creationDate){
+        return harvestRepository.existsByFieldIdAndSeasonAndCreationDate(fieldId, season, creationDate);
     }
 
     public boolean isSameSeason(LocalDate creationDate, Season season) {

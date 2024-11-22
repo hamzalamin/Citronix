@@ -70,7 +70,7 @@ class TreeServiceTest {
         LocalDate creationDate = LocalDate.parse("2020-01-01");
 
         Farm farm = new Farm(1L, "NAME Y", "LOCAL X", 200.0, creationDate, List.of());
-        Field field = new Field(1L, "name x", 12.2, farm, List.of());
+        Field field = new Field(1L, "name x", 12.2, farm,  List.of(),List.of());
 
         given(fieldService.getFieldEntityById(field.getId())).willReturn(field);
 
@@ -92,7 +92,7 @@ class TreeServiceTest {
         LocalDate creationDate = LocalDate.parse("2023-12-01");
 
         Farm farm = new Farm(1L, "Farm Y", "Local X", 200.0, creationDate, List.of());
-        Field field = new Field(1L, "Field X", 1.0, farm, List.of());
+        Field field = new Field(1L, "Field X", 1.0, farm, List.of(), List.of());
         Tree tree = new Tree(null, plantingDate, field, List.of());
 
         CreateTreeDto createTreeDto = new CreateTreeDto(plantingDate, field.getId());

@@ -44,4 +44,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleHarvestAlreadyExistsException(HarvestAlreadyExistsException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(DuplicateHarvestException.class)
+    public ResponseEntity<String> handleDuplicateHarvestException(DuplicateHarvestException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }
