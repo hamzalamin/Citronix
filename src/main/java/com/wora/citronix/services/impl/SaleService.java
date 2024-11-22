@@ -9,6 +9,7 @@ import com.wora.citronix.models.entities.Harvest;
 import com.wora.citronix.models.entities.Sale;
 import com.wora.citronix.repositories.SaleRepository;
 import com.wora.citronix.services.inter.IHarvestService;
+import com.wora.citronix.services.inter.ISaleQuantityValidatorService;
 import com.wora.citronix.services.inter.ISaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +23,7 @@ public class SaleService implements ISaleService {
     private final SaleRepository saleRepository;
     private final SaleMapper saleMapper;
     private final IHarvestService harvestService;
-    private final SaleQuantityValidatorService saleQuantityValidatorService;
+    private final ISaleQuantityValidatorService saleQuantityValidatorService;
 
     @Override
     public SaleDto save(CreateSaleDto createSaleDto) {

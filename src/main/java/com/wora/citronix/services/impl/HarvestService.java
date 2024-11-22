@@ -29,6 +29,7 @@ public class HarvestService implements IHarvestService {
         if (!isSameSeason(createHarvestDto.creationDate(), createHarvestDto.season())){
             throw new NotSameSeasonException("The creation date is not in the same season.");
         }
+//        toDo : khassna n3erfo lharvest dyal ina farm bach man9edrouch nharvestiw 2 merat f nefs season
         Harvest savedHarvest = harvestRepository.save(harvest);
         return harvestMapper.toDto(savedHarvest);
     }
