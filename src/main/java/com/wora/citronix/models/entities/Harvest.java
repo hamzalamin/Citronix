@@ -34,6 +34,11 @@ public class Harvest {
     private List<HarvestDetail> harvestDetails;
 
 
+    @ManyToOne
+    @JoinColumn(name = "field_id")
+    private Field field;
+
+
     @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
     private List<Sale> sales;
 }
