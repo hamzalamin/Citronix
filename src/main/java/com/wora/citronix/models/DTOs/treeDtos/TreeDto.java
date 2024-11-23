@@ -23,13 +23,13 @@ public record TreeDto(
     public double getProductivityByKg() {
         int age = getAge();
         if (age <= 3) {
-            return 2.5;
+            return 2.5 * 4;
         }
         if (age > 3 && age <= 10) {
-            return 12;
+            return 12 * 4;
         }
         if (age > 10 && age <= 20) {
-            return 20;
+            return 20 * 4;
         }
         if (age > 20) {
             return 0;
