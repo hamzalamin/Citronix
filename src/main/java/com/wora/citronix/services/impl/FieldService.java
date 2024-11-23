@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,29 +68,37 @@ public class FieldService implements IFieldService {
         Field field = fieldRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Field", id));
 
-        Farm farm = getFarmById(updateFieldDto.farmId());
+        Farm farm = Optional.ofNullable(updateFieldDto.farmId())
+                .map(farmId -> getFarmById(farmId))
+                .orElse(field.getFarm());
 
-        Double totalFieldsSurface = calculateFieldsSurface(farm);
+        Double newFieldSurface = Optional.ofNullable(updateFieldDto.surface())
+                .orElse(field.getSurface());
+
         Double halfFarmSurface = farm.getSurface() / 2;
-        Double farmSurface = farm.getSurface();
-        Double fieldSurface = field.getSurface();
 
-        if (calculateFieldsNumber(farm) >= 10) {
+        Double totalOtherFieldsSurface = calculateFieldsSurface(farm) -
+                (field.getFarm().getId().equals(farm.getId()) ? field.getSurface() : 0);
+
+        if (!field.getFarm().getId().equals(farm.getId()) && calculateFieldsNumber(farm) >= 10) {
             throw new InsufficientFarmSurfaceException("The maximum number of fields allowed on a farm is 10");
         }
-        if (fieldSurface > halfFarmSurface) {
+        if (newFieldSurface < 0.1) {
+            throw new InsufficientFarmSurfaceException("Surface of Field must be more than 0.1 Hectar");
+        }
+        if (newFieldSurface > halfFarmSurface) {
             throw new InsufficientFarmSurfaceException("Field must be under 50% of the farm surface");
         }
-        if (farmSurface <= totalFieldsSurface + fieldSurface) {
+        if (farm.getSurface() < totalOtherFieldsSurface + newFieldSurface) {
             throw new InsufficientFarmSurfaceException("Farm surface area is insufficient for the new field");
-        }
-        if (fieldSurface < 0.1){
-            throw new InsufficientFarmSurfaceException("Surface of Field must be more then 0.1 Hectar");
         }
 
         field.setFarm(farm);
-        field.setName(updateFieldDto.name());
-        field.setSurface(updateFieldDto.surface());
+        Optional.ofNullable(updateFieldDto.name())
+                .ifPresent(field::setName);
+        Optional.ofNullable(updateFieldDto.surface())
+                .ifPresent(field::setSurface);
+
         Field savedField = fieldRepository.save(field);
         return fieldMapper.toDto(savedField);
     }

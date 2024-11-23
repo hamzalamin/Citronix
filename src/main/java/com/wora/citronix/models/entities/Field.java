@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "fields")
@@ -35,8 +36,8 @@ public class Field {
     private Farm farm;
 
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
-    private List<Tree> trees;
+    private List<Tree> trees = new ArrayList<>();
 
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
-    private List<Harvest> harvests;
+    private List<Harvest> harvests = new ArrayList<>();
 }
