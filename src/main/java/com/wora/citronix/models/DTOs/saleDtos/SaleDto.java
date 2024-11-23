@@ -15,4 +15,7 @@ public record SaleDto(
         @NotNull @Positive Double saleQuantity,
         EmbeddedHarvestDto harvest
 ) {
+    public Double getRevenue(){
+        return unitPrice * saleQuantity;
+    }
 }

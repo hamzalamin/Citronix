@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity(name = "sales")
 @Getter
@@ -40,5 +41,10 @@ public class Sale {
     @ManyToOne
     @JoinColumn(name = "harvest_id")
     private Harvest harvest;
+
+    public Double getRevenue(){
+        return unitPrice * saleQuantity;
+    }
+
 
 }
