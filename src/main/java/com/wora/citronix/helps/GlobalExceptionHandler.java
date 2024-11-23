@@ -22,31 +22,31 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientFarmSurfaceException.class)
     public ResponseEntity<String> handleInsufficientFarmSurfaceException(InsufficientFarmSurfaceException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(InsufficientFieldSurfaceException.class)
     public ResponseEntity<String> handleInsufficientFieldSurfaceException(InsufficientFieldSurfaceException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(PlantingDateException.class)
     public ResponseEntity<String> handlePlantingDateException(PlantingDateException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(NotSameSeasonException.class)
     public ResponseEntity<String> handleNotSameSeasonException(NotSameSeasonException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(HarvestAlreadyExistsException.class)
     public ResponseEntity<String> handleHarvestAlreadyExistsException(HarvestAlreadyExistsException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(DuplicateHarvestException.class)
     public ResponseEntity<String> handleDuplicateHarvestException(DuplicateHarvestException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

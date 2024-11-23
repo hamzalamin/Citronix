@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "harvests")
@@ -31,7 +32,7 @@ public class Harvest {
     private Season season;
 
     @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
-    private List<HarvestDetail> harvestDetails;
+    private List<HarvestDetail> harvestDetails = new ArrayList<>();
 
 
     @ManyToOne
@@ -40,5 +41,5 @@ public class Harvest {
 
 
     @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
-    private List<Sale> sales;
+    private List<Sale> sales = new ArrayList<>();
 }

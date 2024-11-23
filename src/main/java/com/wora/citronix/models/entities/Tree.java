@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "trees")
@@ -30,7 +31,7 @@ public class Tree {
     private Field field;
 
     @OneToMany(mappedBy = "tree", cascade = CascadeType.ALL)
-    private List<HarvestDetail> harvestDetails;
+    private List<HarvestDetail> harvestDetails = new ArrayList<>();
 
     public int getAge(){
         return Period.between(plantingDate, LocalDate.now()).getYears();

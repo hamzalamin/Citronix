@@ -1,5 +1,6 @@
 package com.wora.citronix.services.impl;
 
+import com.wora.citronix.exceptions.DuplicateHarvestException;
 import com.wora.citronix.exceptions.EntityNotFoundException;
 import com.wora.citronix.mappers.SaleMapper;
 import com.wora.citronix.models.DTOs.saleDtos.CreateSaleDto;
@@ -28,6 +29,9 @@ public class SaleService implements ISaleService {
     @Override
     public SaleDto save(CreateSaleDto createSaleDto) {
         Harvest harvest = harvestService.findEntityById(createSaleDto.harvestId());
+        if (harvest.getHarvestDetails() == null || harvest.getHarvestDetails().isEmpty()) {
+            throw new DuplicateHarvestException("Cannot create sale for harvest without harvest details");
+        }
         saleQuantityValidatorService.ensureWantedQuantityExist(createSaleDto.saleQuantity(), createSaleDto.harvestId());
         Sale sale = Sale.builder()
                 .harvest(harvest)
@@ -52,6 +56,9 @@ public class SaleService implements ISaleService {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Sale", id));
         Harvest harvest = harvestService.findEntityById(updateSaleDto.harvestId());
+        if (harvest.getHarvestDetails() == null || harvest.getHarvestDetails().isEmpty()) {
+            throw new DuplicateHarvestException("Cannot create sale for harvest without harvest details");
+        }
         saleQuantityValidatorService.ensureWantedQuantityExistForUpdate(updateSaleDto.saleQuantity(), updateSaleDto.harvestId(), sale.getId());
         sale.setHarvest(harvest)
                 .setSaleDate(updateSaleDto.saleDate())

@@ -39,6 +39,10 @@ public class HarvestService implements IHarvestService {
             throw new DuplicateHarvestException("The field has already been harvested on this date during this season.");
         }
 
+        if (createHarvestDto.creationDate().isBefore(field.getFarm().getCreationDate())){
+            throw new NotSameSeasonException("The harvest creation date cannot be earlier than the farm's creation date. Please ensure the dates align with the same season.");
+        }
+
         harvest.setField(field);
         Harvest savedHarvest = harvestRepository.save(harvest);
         return harvestMapper.toDto(savedHarvest);
@@ -55,10 +59,16 @@ public class HarvestService implements IHarvestService {
     public HarvestDto update(UpdateHarvestDto updateHarvestDto, Long id) {
         Harvest harvest = harvestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Harvest", id));
+        Field field = fieldService.getFieldEntityById(updateHarvestDto.fieldId());
+
         if (!isSameSeason(updateHarvestDto.creationDate(), updateHarvestDto.season())){
             throw new NotSameSeasonException("The creation date is not in the same season.");
         }
+        if (updateHarvestDto.creationDate().isBefore(field.getFarm().getCreationDate())){
+            throw new NotSameSeasonException("The harvest creation date cannot be earlier than the farm's creation date.");
+        }
 
+        harvest.setField(field);
         harvest.setCreationDate(updateHarvestDto.creationDate());
         harvest.setSeason(updateHarvestDto.season());
         Harvest savedHarvest = harvestRepository.save(harvest);
