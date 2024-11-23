@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "farms")
@@ -26,7 +27,7 @@ public class Farm {
     @NotBlank
     private String name;
 
-    @Column(name = "localization")
+    @Column(name = "localization", unique = true)
     @NotBlank
     private String localization;
 
@@ -39,5 +40,5 @@ public class Farm {
     private LocalDate creationDate;
 
     @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL)
-    private List<Field> fields;
+    private List<Field> fields = new ArrayList<>();
 }

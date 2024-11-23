@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,10 +48,20 @@ public class FarmService implements IFarmService {
         if (farm.getSurface() < 0.2){
             throw new InsufficientFarmSurfaceException("The min surface value of farm must be 0.2 Hectar");
         }
-        farm.setName(updateFarmDto.name());
-        farm.setLocalization(updateFarmDto.localization());
-        farm.setCreationDate(updateFarmDto.creationDate());
-        farm.setSurface(farm.getSurface());
+
+        Optional.ofNullable(updateFarmDto.name())
+                .ifPresent(farm::setName);
+        Optional.ofNullable(updateFarmDto.localization())
+                        .ifPresent(farm::setLocalization);
+        Optional.ofNullable(updateFarmDto.creationDate())
+                        .ifPresent(farm::setCreationDate);
+        Optional.ofNullable(updateFarmDto.surface())
+                .ifPresent(farm::setSurface);
+
+//        farm.setName(updateFarmDto.name());
+//        farm.setLocalization(updateFarmDto.localization());
+//        farm.setCreationDate(updateFarmDto.creationDate());
+//        farm.setSurface(farm.getSurface());
         Farm updatedFarm = farmRepository.save(farm);
         return farmMapper.toDto(updatedFarm);
     }
