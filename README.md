@@ -1,4 +1,4 @@
-## Citronix  
+## 🍋 Citronix  
 Farm Management System for Lemon Farms  
 
 📖 **Project Overview**  
