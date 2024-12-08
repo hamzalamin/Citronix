@@ -75,6 +75,8 @@ Citronix is a comprehensive farm management system designed for lemon farms. It 
 ### 3. **Testing**  
    - **JUnit**: Used for unit testing individual components and methods.  
    - **Mockito**: Employed for mocking dependencies and isolating units during testing.
+   - **Selenium**: Used for automated end-to-end testing of the farm creation form. Selenium simulates user interactions with the web application and verifies if the success messages and form behavior are correct.
+
 
 ## 📁 Project Structure
 
