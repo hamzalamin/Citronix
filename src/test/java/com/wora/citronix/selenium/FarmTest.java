@@ -76,6 +76,27 @@ public class FarmTest {
         assertTrue(errorText.contains("could not execute statement") || errorText.contains("unique constraint"));
     }
 
+    @Test
+    public void createFarm_withInvalidSurface_ShouldThrowException(){
+        driver.get("http://localhost:3000/");
+
+        WebElement nameInput = driver.findElement(By.name("name"));
+        WebElement localizationInput = driver.findElement(By.name("localization"));
+        WebElement surfaceInput = driver.findElement(By.name("surface"));
+        WebElement creationDateInput = driver.findElement(By.name("creationDate"));
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+
+        nameInput.sendKeys("Farm Hamza not Lamin ZAN-ZAN" + System.currentTimeMillis());
+        localizationInput.sendKeys("AGADIR, TARRAST");
+        surfaceInput.sendKeys("0.1");
+        creationDateInput.sendKeys("12-12-2024");
+        submitButton.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error-msg")));
+        assertEquals("The min surface value of farm must be 0.2 Hectar", errorMessage.getText());
+    }
+
     @AfterEach
     public void tearDown() {
         if (driver != null) {
