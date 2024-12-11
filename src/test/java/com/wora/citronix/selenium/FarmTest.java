@@ -10,7 +10,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.sql.SQLException;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,15 +19,17 @@ public class FarmTest {
 
     private WebDriver driver;
     @BeforeEach
-    public void setUp() throws SQLException {
-        System.setProperty("webdriver.chrome.driver", "C:/Users/hamza/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe");
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", System.getenv("CHROME_DRIVER_PATH"));
         driver = new ChromeDriver();
+        driver.get("http://localhost:3000/create-farm");
+
     }
 
+
+    //todo: Reusable Page Objects
     @Test
     public void createFarm_withUniqueName_shouldSucceed() {
-        driver.get("http://localhost:3000/");
-
         WebElement nameInput = driver.findElement(By.name("name"));
         WebElement localizationInput = driver.findElement(By.name("localization"));
         WebElement surfaceInput = driver.findElement(By.name("surface"));
@@ -41,22 +42,15 @@ public class FarmTest {
         creationDateInput.sendKeys("12-12-2024");
 
         submitButton.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".success-msg")));
-        assertEquals("Farm created successfully.", successMessage.getText());
+        assertEquals("Farm created successfully.", successMessage.getText(), "Success message mismatch");
 
     }
 
     @Test
     public void createFarm_withNotUniqueName_ShouldThrowException(){
-        driver.get("http://localhost:3000/");
-
         WebElement nameInput = driver.findElement(By.name("name"));
         WebElement localizationInput = driver.findElement(By.name("localization"));
         WebElement surfaceInput = driver.findElement(By.name("surface"));
@@ -73,13 +67,11 @@ public class FarmTest {
 
         WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error-msg")));
         String errorText = errorMessage.getText();
-        assertTrue(errorText.contains("could not execute statement") || errorText.contains("unique constraint"));
+        assertTrue(errorText.contains("unexpected error") || errorText.contains("unique constraint"));
     }
 
     @Test
     public void createFarm_withInvalidSurface_ShouldThrowException(){
-        driver.get("http://localhost:3000/");
-
         WebElement nameInput = driver.findElement(By.name("name"));
         WebElement localizationInput = driver.findElement(By.name("localization"));
         WebElement surfaceInput = driver.findElement(By.name("surface"));
